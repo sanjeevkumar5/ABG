@@ -3,29 +3,45 @@ package pomClasses;
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.NoSuchElementException;
+import java.util.concurrent.TimeUnit;
+
+import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import com.selenium.framework.FrameworkUtility;
+import org.openqa.selenium.support.ui.Wait;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 /*
  * @author csurek
  * 01-August-2018 - Page Factory Approach for Avis GUI objects and CR common functionalities
  */
-public class GUIFunctions extends FrameworkUtility{
+@SuppressWarnings("unused")
+public class GUIFunctions{
 
 	ChromeDriver driver;
 	  
 	public GUIFunctions(WebDriver driver) throws Exception
 	{
-		PageFactory.initElements(driver, this);		
+		this.driver = (ChromeDriver) driver;
+		PageFactory.initElements(driver, this);
+		
 	}
-	
 	
 	/* Login Page Objects */
 	
@@ -35,10 +51,9 @@ public class GUIFunctions extends FrameworkUtility{
 	@FindBy(name= "PASSWORD")
 	public  WebElement txt_password;
 
-	@FindBy(xpath= "//*[@id='content']/table/tbody/tr/td[2]/form/table/tbody/tr[3]/td/input[2]")
-	public  WebElement btn_login;
+	@FindBy(xpath= "//input[@type='SUBMIT']")
+    public  WebElement btn_login;
 
-	
 	/*Navigate TAB Objects*/	
 	@FindBy(xpath="//*[@id='menubar']/ul/li[1]/a")
 	private  WebElement tab_CheckOut;
@@ -87,6 +102,18 @@ public class GUIFunctions extends FrameworkUtility{
 	@FindBy(xpath="//*[@id='menulist:rateshopContainer:resForm:carGroup']")
 	public  WebElement ddl_CarGroup;
 	
+	//expand toggle
+	@FindBy(id="custToggle")
+	public  WebElement btn_toggle;	
+	
+	/*DR LIC Details*/
+
+	@FindBy(xpath="//*[@id='menulist:rateshopContainer:resForm:rftnType']")
+	public  WebElement txt_FTNType;
+	
+	@FindBy(xpath="//*[@id='menulist:rateshopContainer:resForm:ftNumber']")
+	public  WebElement txt_FTNNumber;
+	
 	@FindBy(xpath="//*[@id='menulist:rateshopContainer:resForm:discountNumber']")
 	public  WebElement txt_AWD;
 	
@@ -124,6 +151,23 @@ public class GUIFunctions extends FrameworkUtility{
 	@FindBy(id="resCoveragesInfoPanel") 
 	public  WebElement sec_PAPSection;
 	
+	
+	/*DisplayRental Objects*/
+	@FindBy(id="menulist:dispormodContainer:rentalSearchForm:searchString") 
+	public  WebElement txt_DRRentalSearch;
+	
+	@FindBy(id="searchCommandLinkDisplayRental") 
+	public  WebElement btn_DRSearch;
+	
+	@FindBy(className ="voidRentalClass") 
+	public  WebElement btn_Void;
+	
+	@FindBy(id="displayRentalMenuBarDialogs:voidPopupForm:voidRemarks") 
+	public  WebElement txt_VoidRemarks;
+	
+	@FindBy(id="displayRentalMenuBarDialogs:voidPopupForm:voidPopupDlgOkButton") 
+	public  WebElement txt_VoidRemarksPopupOK;
+	
 	/*LogOut Objects*/	
 	@FindBy(id="headerLogOutButton")
 	private  WebElement icon_LogOut;
@@ -131,26 +175,16 @@ public class GUIFunctions extends FrameworkUtility{
 	@FindBy(id="logoutForm:yesLogoutButton")
 	private  WebElement btn_LogOut;
 	
+	
 	/*Excel functionality to get and set data in excel cell */
 
 	/*Open GUI Tabs*/
-	public void link(String token, String thinClient) throws InterruptedException, AWTException
+	public void openURL(String thinClient) throws InterruptedException, AWTException
 	{
-		driver.get(token);
-		Thread.sleep(2000);
-		String WindowHandle = driver.getWindowHandle();
-		Robot robot = new Robot();
-		robot.keyPress(KeyEvent.VK_CONTROL);
-		robot.keyPress(KeyEvent.VK_T);
-		robot.keyRelease(KeyEvent.VK_CONTROL);
-		robot.keyRelease(KeyEvent.VK_T);
-		ArrayList<String> tabs = new ArrayList(driver.getWindowHandles());
-		driver.switchTo().window(tabs.get(1));
-		Thread.sleep(500);
 		try
 		{
 		driver.get(thinClient);
-		Assert.assertTrue(driver.getTitle().equals("Login")); // check whether page with title Login is loaded
+		Assert.assertTrue(driver.getTitle().equals("Access Manager Login")); // check whether page with title Login is loaded
 		}
 		catch(Exception e)
 		{
@@ -158,11 +192,21 @@ public class GUIFunctions extends FrameworkUtility{
 		}
 	}
 	
-	public void login(String username, String password)
+	public void login(String username, String password) throws InterruptedException
 	{
     	txt_userid.sendKeys(username);
 		txt_password.sendKeys(password);
 		btn_login.click();
+		Thread.sleep(3000);
+		String pageTitle = driver.getTitle();
+	    if(pageTitle.equals("Avis Budget Group"))
+		{
+		  System.out.println(pageTitle);
+		}
+	    else
+		{
+		driver.navigate().refresh();
+	    }
 	}
 	
 	public void navigateToTab(String tabname)
@@ -217,6 +261,19 @@ public class GUIFunctions extends FrameworkUtility{
 		txt_CItime.sendKeys(citime);
 	}
 	
+	public void expandToggleBtn()
+	{
+		btn_toggle.click();
+	}
+	
+	public void enterFTN(String FTNNumber)
+	{
+		String[] FTNValue = FTNNumber.split("/");
+		txt_FTNType.sendKeys(FTNValue[0]);
+		txt_FTNNumber.sendKeys(FTNValue[1]);
+		
+	}
+	
 	public void selectCarGroupByVT(String carGroup) throws InterruptedException
 	{
 		//selectItemFromListBoxByText(ddl_CarGroup,carGroup);	
@@ -247,21 +304,10 @@ public class GUIFunctions extends FrameworkUtility{
 		
 		 WebElement header_MOPPayment = sec_MOPSection.findElement(By.className("panel-heading"));
 
-		 WebElement btn_MOPSectionExpand = header_MOPPayment.findElement(By.className("pull-right")) ;
-      try
-       {
-          if (btn_MOPSectionExpand.isDisplayed())
-          {
-       	 if(btn_MOPSectionExpand.isEnabled())
-       	    {
-       		  btn_MOPSectionExpand.click();
-       	    }
-          } 
-        }
-      catch(Exception e3)
-        {
-       	 e3.printStackTrace();
-        }
+		 WebElement btn_MOPSectionExpand = header_MOPPayment.findElement(By.className("pull-right"));
+		 
+		 JavascriptExecutor js = (JavascriptExecutor)driver;
+		 js.executeScript("arguments[0].click();", btn_MOPSectionExpand);
 	}
 	
 	public void enterPaymentInformations(String cardName, String cardNumber, String month, String year, String reason)
@@ -303,8 +349,31 @@ public class GUIFunctions extends FrameworkUtility{
 		btn_CreateReservation.click();
 	}
 	
+	public void ScreenCapture(String ScreenShotPath , String testcasename) throws IOException
+    { 
+           Date d= new Date();
+           SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-DD HH-MM-SS");
+           File src= ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);     
+           FileUtils.copyFile(src,new File( ScreenShotPath +testcasename+ sdf.format(d)+".pgn"));      
+    }
+	
+	public void displayRA(String RANumber)
+	{
+		txt_DRRentalSearch.sendKeys(RANumber);
+		btn_DRSearch.click();
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+	}
+	
+	public void makeRAVoid(String voidRemarks)
+	{
+		btn_Void.click();
+		txt_VoidRemarks.sendKeys(voidRemarks);
+		txt_VoidRemarksPopupOK.click();
+	}
+	
 	public void logout() throws InterruptedException
 	{
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		icon_LogOut.click();
 		Thread.sleep(2000);
 		btn_LogOut.click();		
@@ -313,8 +382,7 @@ public class GUIFunctions extends FrameworkUtility{
 	public void closeWindows()
 	{
 		ArrayList<String> tabs = new ArrayList(driver.getWindowHandles());
-		driver.switchTo().window(tabs.get(1)).close();
-        driver.switchTo().window(tabs.get(0)).close(); 
+        driver.close(); 
 		driver.quit();
 	}
 	
