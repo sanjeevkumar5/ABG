@@ -5,11 +5,13 @@ import java.awt.Robot;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
+
 import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
 import org.openqa.selenium.By;
@@ -133,7 +135,8 @@ public class GUIFunctions{
 	@FindBy(id="menulist:rateshopContainer:resForm:creditCard:swipe:ccType") 
 	public  WebElement dd_paymentCard;
 	
-	@FindBy(id="menulist:rateshopContainer:resForm:creditCard:swipe:ccNumber") 
+	@FindBy(id="menulist:rateshopContainer:resForm:creditCard:swipe:ccNumber")
+	//@FindBy(xpath="//input[@id='menulist:rateshopContainer:resForm:creditCard:swipe:ccNumber']")
 	public  WebElement txt_cardNumber;
 	
 	@FindBy(id="menulist:rateshopContainer:resForm:creditCard:swipe:ccExpireMonth") 
@@ -309,7 +312,7 @@ public class GUIFunctions{
 		 js.executeScript("arguments[0].click();", btn_MOPSectionExpand);
 	}
 	
-	public void enterPaymentInformations(String cardName, String cardNumber, String month, String year, String reason)
+	public void enterPaymentInformations(String cardName, String cardNumber, String month, String year, String reason) throws InterruptedException
 	{
         Select cardDD = new Select(dd_paymentCard);
         cardDD.selectByVisibleText(cardName);
@@ -348,12 +351,35 @@ public class GUIFunctions{
 		btn_CreateReservation.click();
 	}
 	
-	public void ScreenCapture(String ScreenShotPath , String testcasename) throws IOException
+	public String get_Abs_Path(){
+		String Wk_dir = Paths.get("").toAbsolutePath().toString();
+		return Wk_dir.toString();
+	}
+	
+	public void create_folder_path(String Wk_dir){
+		
+		File path = new File(Wk_dir);
+		if (!path.exists()){
+			if(path.mkdirs()){
+				System.out.println("Folder Created successfully");
+				
+			}
+			else{
+				
+			}
+			System.out.println("Folder exist!!!");
+			System.out.println(path);
+		}
+		
+	}
+	
+	public void ScreenCapture(String Scr_Path ,String testcasename) throws IOException
     { 
+		
            Date d= new Date();
-           SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-DD HH-MM-SS");
+           SimpleDateFormat sdf = new SimpleDateFormat("YYYYMMdd_HH-MM-SS");
            File src= ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);     
-           FileUtils.copyFile(src,new File( ScreenShotPath +testcasename+ sdf.format(d)+".pgn"));      
+           FileUtils.copyFile(src,new File( Scr_Path +"\\"+testcasename+"_"+ sdf.format(d)+".pgn"));      
     }
 	
 	public void displayRA(String RANumber)
