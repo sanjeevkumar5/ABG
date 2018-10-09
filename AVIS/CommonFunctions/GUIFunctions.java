@@ -252,7 +252,7 @@ public class GUIFunctions{
 	}		
 
 	
-	public void enterCustomerInformation(String lastname, String firstname,String codate,String cotime, String instation, String cidate, String citime)
+	public void enterCustomerInformation(String lastname, String firstname,String codate,String cotime, String instation, String cidate, String citime) throws InterruptedException
 	{
 		txt_lastname.sendKeys(lastname);
 		txt_firstname.sendKeys(firstname);
@@ -260,7 +260,11 @@ public class GUIFunctions{
 		txt_COtime.sendKeys(cotime);
 		txt_inSTA.sendKeys(instation);
 		dtp_CIdate.sendKeys(cidate);
+		Thread.sleep(1000);
+		txt_CItime.click();
+		Thread.sleep(1000);
 		txt_CItime.sendKeys(citime);
+		Thread.sleep(1000);
 	}
 	
 	public void expandToggleBtn()
@@ -278,14 +282,12 @@ public class GUIFunctions{
 	
 	public void selectCarGroupByVT(String carGroup) throws InterruptedException
 	{
-		//selectItemFromListBoxByText(ddl_CarGroup,carGroup);	
 	    Select carDD = new Select(ddl_CarGroup);
 	    carDD.selectByVisibleText(carGroup);		
 	}
 	
 	public void selectCarGroupByIndex(int indexno) throws InterruptedException
 	{
-		//selectItemFromListBoxByText(ddl_CarGroup,carGroup);	
 	    Select carDD = new Select(ddl_CarGroup);
 	    carDD.selectByIndex(indexno);		
 	}
@@ -301,7 +303,7 @@ public class GUIFunctions{
 	}
 	
 	/*Payment Info*/	
-	public void expandPaymentInfoSection()
+	public void expandPaymentInfoSection() throws InterruptedException
 	{	
 		
 		 WebElement header_MOPPayment = sec_MOPSection.findElement(By.className("panel-heading"));
@@ -310,12 +312,15 @@ public class GUIFunctions{
 		 
 		 JavascriptExecutor js = (JavascriptExecutor)driver;
 		 js.executeScript("arguments[0].click();", btn_MOPSectionExpand);
+	     Thread.sleep(10000);
 	}
 	
 	public void enterPaymentInformations(String cardName, String cardNumber, String month, String year, String reason) throws InterruptedException
 	{
         Select cardDD = new Select(dd_paymentCard);
         cardDD.selectByVisibleText(cardName);
+        txt_cardNumber.click();
+        Thread.sleep(1000);
         txt_cardNumber.sendKeys(cardNumber);
         txt_expiryMonth.sendKeys(month);
         txt_expiryYear.sendKeys(year);	
@@ -379,7 +384,7 @@ public class GUIFunctions{
            Date d= new Date();
            SimpleDateFormat sdf = new SimpleDateFormat("YYYYMMdd_HH-MM-SS");
            File src= ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);     
-           FileUtils.copyFile(src,new File( Scr_Path +"\\"+testcasename+"_"+ sdf.format(d)+".pgn"));      
+           FileUtils.copyFile(src,new File( Scr_Path +"\\"+testcasename+"_"+ sdf.format(d)+".png"));      
     }
 	
 	public void displayRA(String RANumber)
