@@ -1,7 +1,7 @@
 /**
 '#############################################################################################################################
-'## SCRIPT NAME     : AVIS_GUI_Split_Billing_CheckOut
-'## BRAND           : AVIS
+'## SCRIPT NAME     : Payless_GUI_Split_Billing_CheckOut
+'## BRAND           : Payless
 '## DESCRIPTION     : Split Billing Checkout.
 '## FUNCTIONAL AREA : Checkout
 '## PRECONDITION    : All the required Test Data should be available in Test Data Sheet.
@@ -45,7 +45,7 @@ import com.aventstack.extentreports.Status;
 
 import pomClasses.ReadWriteExcel;
 
-public class AVIS_GUI_Split_Billing_CheckOut
+public class Payless_GUI_Split_Billing_CheckOut
 {
    ExtentReports extent; //TestNG Extent Reports Changes.
    ExtentTest test;     //TestNG Extent Reports Changes.
@@ -53,7 +53,7 @@ public class AVIS_GUI_Split_Billing_CheckOut
    @BeforeTest //TestNG Extent Reports Changes.
    public void startReport() //TestNG Extent Reports Changes.
    {
-	   extent = Extentmanager.GetExtent(this.getClass().getSimpleName()); //TestNG Extent Reports Changes.
+		extent = Extentmanager.GetExtent(this.getClass().getSimpleName()); //TestNG Extent Reports Changes.
 		//test = extent.createTest("GUI");
    }
    
@@ -62,11 +62,6 @@ public class AVIS_GUI_Split_Billing_CheckOut
 	@Test //TestNG Extent Reports Changes.
 	public void test() throws Exception //TestNG Extent Reports Changes.
 	{
-		//String getClassName = AVIS_GUI_Split_Billing_CheckOut.class.getName();
-		//System.out.println("classs name "+ getClassName);
-		//String[] splitScriptVal = getClassName.split("methods.");
-		//System.out.println(" split value is " + splitScriptVal[1]);
-		
 	   try //TestNG Extent Reports Changes.
 	   {
 		  // Read input from excel
@@ -74,7 +69,7 @@ public class AVIS_GUI_Split_Billing_CheckOut
 	      
 	      ChromeDriver driver = null;
 	      
-	      ReadWriteExcel rwe  = new ReadWriteExcel("C:\\GitHub\\ABG\\AVIS\\TestData\\InternetGUI\\AVIS_GUI_Split_Billing_CheckOut.xlsx");
+	      ReadWriteExcel rwe  = new ReadWriteExcel("C:\\GitHub\\ABG\\Payless\\TestData\\InternetGUI\\Payless_GUI_Split_Billing_CheckOut.xlsx");
 	      int intRowCount     = rwe.intRowCount;
 	      
 	      System.out.println(" Total row count in Split Billing test data sheet is : " + intRowCount);
@@ -469,7 +464,7 @@ public class AVIS_GUI_Split_Billing_CheckOut
 		      
               //Log out and close tabs.
               
-	          AVIS_GUI_Split_Billing_CheckOut Avis = new AVIS_GUI_Split_Billing_CheckOut();              
+	          Payless_GUI_Split_Billing_CheckOut Avis = new Payless_GUI_Split_Billing_CheckOut();              
               Avis.clickLogout(driver);
               Thread.sleep(1000);
               driver.close();
@@ -499,9 +494,9 @@ public class AVIS_GUI_Split_Billing_CheckOut
    
   private void scriptName()
   {
-	 // TODO Auto-generated method stub
+	// TODO Auto-generated method stub
   }
-  
+
 public void clickLogout(ChromeDriver driver)
   {
 	 JavascriptExecutor jse = (JavascriptExecutor)driver;
