@@ -14,9 +14,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  * @author csurek
  * 27-June-2018 - POM to read value from excel
  */
-public class ReadWriteExcel {
-
-	
+public class ReadWriteExcel {	
 	public FileInputStream fis;
 	public FileOutputStream fos;
 	public XSSFWorkbook wb;
