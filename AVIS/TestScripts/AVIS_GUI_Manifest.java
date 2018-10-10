@@ -11,12 +11,19 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
 
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.Status;
+
+import pomClasses.GUIFunctions;
 import pomClasses.ReadWriteExcel;
 
 /**
 '#################################################################################################################################
-'## SCRIPT NAME:                           AVIS_GUI_Manifest
+'## SCRIPT NAME:                           Avis_GUI_Manifest
 '## BRAND:                                         AVIS
 '## DESCRIPTION:                           Perform a Manifest of different Types to capture the report details in different regions.
 '## FUNCTIONAL AREA :                      Manifest Screen
@@ -26,38 +33,52 @@ import pomClasses.ReadWriteExcel;
 '##################################################################################################################################
  **/
 
-public class AVIS_GUI_Manifest {
+public class AVIS_GUI_Manifest
+{
 
-	public static void main(String[] args) throws Throwable {
-		
-		for (int k=1; k<=2; k++)
+	ExtentReports extent;
+	ExtentTest test;
+
+	@BeforeTest
+	public void startReport()
+	{
+		extent = Extentmanager.GetExtent();
+		//test = extent.createTest("GUI");
+	}
+
+//	public static void main(String[] args) throws Throwable {
+	@Test
+	public void test() throws Exception
+	{
+		try
 		{
-			ReadWriteExcel rwe = new ReadWriteExcel("C:\\Backup\\ABG SE Scripts\\TestData\\Manifest\\AVIS_GUITestData_Manifest_Regression.xlsx");
-			System.setProperty("webdriver.chrome.driver", "C:\\Backup\\ABG SE Scripts\\chromedriver.exe");
-			WebDriver driver = new ChromeDriver();
-			String ScreenShotPath = "C:\\Selenium\\Screenshots\\Avis_Manifest\\";
 			
-				String Execute 					= rwe.getCellData("Manifest_Avis", k, 	2);
-				String TESTCASENAME 			= rwe.getCellData("Manifest_Avis", k, 	4);
-				String THINCLIENTURL 			= rwe.getCellData("Manifest_Avis", k, 	6);
-				String USERID 					= rwe.getCellData("Manifest_Avis", k, 	7);
-				String PASSWORD 				= rwe.getCellData("Manifest_Avis", k, 	8);
-				String OUTSTATION				= rwe.getCellData("Manifest_Avis", k,  	9);
-//				String COUNTER_NUM				= rwe.getCellData("Manifest_Avis", k,  13);
-				
-			if ( Execute.equals("N") )	
+		   for (int k=1; k<=2; k++)
+		   {
+			   ReadWriteExcel rwe = new ReadWriteExcel("C:\\Backup\\ABG SE Scripts\\TestData\\Manifest\\Avis_GUITestData_Manifest_Regression.xlsx");
+			   System.setProperty("webdriver.chrome.driver", "C:\\Backup\\ABG SE Scripts\\chromedriver.exe");
+			   WebDriver driver = new ChromeDriver();
+			   GUIFunctions functions = new GUIFunctions(driver);
+			   String ScreenShotPath = "C:\\Selenium\\Screenshots\\Avis_Manifest\\";
+			   
+			   String Execute 					= rwe.getCellData("Manifest_Avis", k,  2);
+			   String TESTCASENAME 			= rwe.getCellData("Manifest_Avis", k,  4);
+		       String THINCLIENTURL 			= rwe.getCellData("Manifest_Avis", k,  6);
+			   String USERID 					= rwe.getCellData("Manifest_Avis", k,  7);
+			   String PASSWORD 				= rwe.getCellData("Manifest_Avis", k,  8);
+			   String OUTSTATION				= rwe.getCellData("Manifest_Avis", k,  9);
+//			   String COUNTER_NUM				= rwe.getCellData("Manifest_Avis", k, 13);
+			   
+			if (Execute.equals("N"))	
 				driver.close();
 			
-			if ( Execute.equals("Y") )
+			if (Execute.equals("Y"))
 			{
 				driver.get(THINCLIENTURL + OUTSTATION);
-				driver.findElement(By.name("username")).sendKeys(USERID);
-				driver.findElement(By.name("PASSWORD")).sendKeys(PASSWORD);
-					
-				driver.findElement(By.cssSelector("body > table:nth-child(7) > tbody > tr > td:nth-child(2) > form > table > tbody > tr:nth-child(3) > td > input[type=\"SUBMIT\"]:nth-child(3)")).click();
+				functions.login(USERID, PASSWORD);
+
 				driver.navigate().refresh();
 				Thread.sleep(10000);
-					
 				driver.manage().window().maximize();
 					
 				driver.findElement(By.xpath("//*[@id=\"menubar\"]/ul/li[5]/a")).click();
@@ -90,21 +111,19 @@ public class AVIS_GUI_Manifest {
 				String NoData	=	"09-DATA NOT AVAILABLE FOR DTE ENTERED";
 	
 	// Logout the application when the "No reservations found"
-				if(NoResFound.equals(ResVal) || NoResFound.equals(NoData)){
+				if(NoResFound.equals(ResVal) || NoResFound.equals(NoData))
+				{
 					Date d= new Date();
 					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
 					File src= ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
 					FileUtils.copyFile(src,new File( ScreenShotPath +TESTCASENAME+ sdf.format(d)+"_1Day"+".pgn"));
 					
-					driver.findElement(By.id("headerLogOutButton")).click();
-					Thread.sleep(2000);
-					driver.findElement(By.id("logoutForm:yesLogoutButton")).click();
-					Thread.sleep(3000);
+					functions.logout();
 					driver.close();
-				}else{
-		    		
+				}
+				else
+				{
 					WebElement TotItems = driver.findElement(By.xpath("//*[@id=\"manifestGrid\"]/div[2]/div[2]/div/span"));
-					TotItems.getText();
 					String TotItems1= TotItems.getText();
 					String str = TotItems1;
 				    System.out.println(str);
@@ -119,9 +138,8 @@ public class AVIS_GUI_Manifest {
 					Thread.sleep(3000);
 					
 					WebElement ResNo = driver.findElement(By.xpath("//*[@id=\"resDetailPanel\"]/div[1]/div/span"));
-					ResNo.getText();
 					String ResNo1= ResNo.getText();
-					System.out.println(ResNo.getText());	
+						
 	//		Thread.sleep(2000);
 					rwe.setCellData("Manifest_Avis", k, 15, ResNo1);
 					
@@ -131,21 +149,15 @@ public class AVIS_GUI_Manifest {
 					rwe.setCellData("Manifest_Avis", k, 17, AWD1);
 					
 					WebElement Wizard = driver.findElement(By.xpath("//*[@id=\"resDetailPanel\"]/div[2]/div[1]/div[1]/div/div[5]/div[2]"));
-					Wizard.getText();
 					String Wizard1 = Wizard.getText();
-					System.out.println(Wizard.getText());	
 					rwe.setCellData("Manifest_Avis", k, 18, Wizard1);
 					
 					WebElement Coupon = driver.findElement(By.xpath("//*[@id=\"resDetailPanel\"]/div[2]/div[2]/div[1]/div/div[7]/div[2]"));
-					Coupon.getText();
 					String Coupon1 = Coupon.getText();
-					System.out.println(Coupon.getText());	
 					rwe.setCellData("Manifest_Avis", k, 46, Coupon1);
 					
 					WebElement PickUpLoc = driver.findElement(By.xpath("//*[@id=\"resDetailPanel\"]/div[2]/div[3]/div[3]/div/div[3]/div[2]/span"));
-					PickUpLoc.getText();
 					String PickUpLoc1 = PickUpLoc.getText();
-					System.out.println(PickUpLoc.getText());	
 					rwe.setCellData("Manifest_Avis", k, 19, PickUpLoc1);
 					
 					WebElement PickupDate = driver.findElement(By.xpath("//*[@id=\"resDetailPanel\"]/div[2]/div[3]/div[3]/div/div[5]/div[2]/span"));
@@ -204,14 +216,10 @@ public class AVIS_GUI_Manifest {
 	
 	//Capture the total number of items are displayed		
 					WebElement max_TotItems = driver.findElement(By.xpath("//*[@id=\"manifestGrid\"]/div[2]/div[2]/div/span"));
-					max_TotItems.getText();
-					System.out.println(max_TotItems.getText());
 					String max_TotItems1= max_TotItems.getText();
-					System.out.println(max_TotItems.getText());
-					
+										
 					String max_str = max_TotItems1;
-					System.out.println(max_str);
-				    max_str = max_str.substring(9, max_str.length()-5);
+					max_str = max_str.substring(9, max_str.length()-5);
 					rwe.setCellData("Manifest_Avis", k, 25, max_str);
 	
 	//Select a one of the record to open in report format		
@@ -220,59 +228,42 @@ public class AVIS_GUI_Manifest {
 					Thread.sleep(3000);
 					
 					WebElement max_ResNo = driver.findElement(By.xpath("//*[@id=\"resDetailPanel\"]/div[1]/div/span"));
-					max_ResNo.getText();
 					String max_ResNo1= max_ResNo.getText();
-					System.out.println(max_ResNo.getText());
 					rwe.setCellData("Manifest_Avis", k, 26, max_ResNo1);
 					
 					WebElement max_AWD = driver.findElement(By.xpath("//*[@id='resDetailPanel']/div[2]/div[2]/div[1]/div/div[3]/div[2]"));
 					String max_AWD1= max_AWD.getText();
-					System.out.println(max_AWD.getText());	
 					rwe.setCellData("Manifest_Avis", k, 28, max_AWD1);
 					
 					WebElement max_Wizard = driver.findElement(By.xpath("//*[@id=\"resDetailPanel\"]/div[2]/div[1]/div[1]/div/div[5]/div[2]"));
-					max_Wizard.getText();
 					String max_Wizard1 = max_Wizard.getText();
-					System.out.println(max_Wizard.getText());	
 					rwe.setCellData("Manifest_Avis", k, 29, max_Wizard1);
 					
 					WebElement max_Coupon = driver.findElement(By.xpath("//*[@id=\"resDetailPanel\"]/div[2]/div[2]/div[1]/div/div[7]/div[2]"));
 					max_Coupon.getText();
 					
 					WebElement max_PickUpLoc = driver.findElement(By.xpath("//*[@id=\"resDetailPanel\"]/div[2]/div[3]/div[3]/div/div[3]/div[2]/span"));
-					max_PickUpLoc.getText();
 					String max_PickUpLoc1 = max_PickUpLoc.getText();
-					System.out.println(max_PickUpLoc.getText());	
 					rwe.setCellData("Manifest_Avis", k, 30, max_PickUpLoc1);
 					
 					WebElement max_PickupDate = driver.findElement(By.xpath("//*[@id=\"resDetailPanel\"]/div[2]/div[3]/div[3]/div/div[5]/div[2]/span"));
-					max_PickupDate.getText();
 					String max_PickupDate1 = max_PickupDate.getText();
-					System.out.println(max_PickupDate.getText());	
 					rwe.setCellData("Manifest_Avis", k, 31, max_PickupDate1);
 					
 					WebElement max_ReturnLoc = driver.findElement(By.xpath("//*[@id=\"resDetailPanel\"]/div[2]/div[3]/div[5]/div/div[3]/div[2]/span"));
-					ReturnLoc.getText();
 					String max_ReturnLoc1 = max_ReturnLoc.getText();
-					System.out.println(max_ReturnLoc.getText());	
 					rwe.setCellData("Manifest_Avis", k, 32, max_ReturnLoc1);
 					
 					WebElement max_ReturnDateTime = driver.findElement(By.xpath("//*[@id=\"resDetailPanel\"]/div[2]/div[3]/div[5]/div/div[5]/div[2]/span"));
-					max_ReturnDateTime.getText();
 					String max_ReturnDateTime1 = max_ReturnDateTime.getText();
-					System.out.println(max_ReturnDateTime.getText());	
 					rwe.setCellData("Manifest_Avis", k, 33, max_ReturnDateTime1);
 					
 					WebElement max_CarClass = driver.findElement(By.xpath("//*[@id=\"resDetailPanel\"]/div[2]/div[1]/div[2]/div/div[4]/span"));
-					max_CarClass.getText();
 					String max_CarClass1 = max_CarClass.getText();
-					System.out.println(max_CarClass.getText());	
 					rwe.setCellData("Manifest_Avis", k, 34, max_CarClass1);
 					
 					WebElement max_BookingDt = driver.findElement(By.xpath("//*[@id=\"resDetailPanel\"]/div[2]/div[1]/div[2]/div/div[16]/span"));
-					max_BookingDt.getText();
 					String max_BookingDt1 = max_BookingDt.getText();
-					System.out.println(max_BookingDt.getText());
 					rwe.setCellData("Manifest_Avis", k, 35, max_BookingDt1);
 					Thread.sleep(2000);
 					
@@ -285,17 +276,36 @@ public class AVIS_GUI_Manifest {
 					driver.findElement(By.id("mdetailCloseButton")).click();
 					Thread.sleep(2000);
 					
-	// Logout the application		
-					driver.findElement(By.xpath("//*[@id=\"headerLogOutButton\"]")).click();
-					Thread.sleep(2000);
+	// Logout the application
+					test = extent.createTest(TESTCASENAME);
 					
-					driver.findElement(By.xpath("//*[@id=\"logoutForm:yesLogoutButton\"]")).click();
-					Thread.sleep(3000);
+					if (rwe.getCellData("Manifest_Avis", k, 22).isEmpty())
+					{
+						rwe.setCellData("Manifest_Avis", k, 23, "FAIL");
+						test.log(Status.FAIL, "Fail");
+					}
+					else
+					{
+						test.log(Status.PASS, "Pass");
+						rwe.setCellData("Manifest_Avis", k, 23, "PASS");
+					}
+
 					
+					functions.logout();
 					driver.close();
 				}
-			}else{
-			System.out.println("Execution status is N for iteration "+k+"...");
+			}
+			
+			else
+			{
+			   System.out.println("Execution status is N for iteration "+k+"...");
+		    }
 		}
 	}
-}}
+	finally
+	{
+		// TODO: handle finally clause
+		extent.flush();
+	}
+  }
+}
