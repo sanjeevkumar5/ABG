@@ -18,8 +18,8 @@ import pomClasses.ReadWriteExcel;
 
 /**
  * '#############################################################################################################################
- * SCRIPT NAME      :  GUI_CreateReservation_MOP_AVIS 
- * BRAND            :  AVIS
+ * SCRIPT NAME      :  Payless_GUI_CreateReservation_MOP 
+ * BRAND            :  Payless
  * DESCRIPTION      :  Create Reservation with different Method of Payments. 
  * FUNCTIONAL AREA  :  Reservation Rates Screen 
  * PRECONDITION     :  All the required Test Data should be available in Test Data Sheet. 
@@ -27,7 +27,7 @@ import pomClasses.ReadWriteExcel;
  * '#############################################################################################################################
  **/
 
-public class GUI_CreateReservation_MOP_Payless
+public class Payless_GUI_CreateReservation_MOP
 {
 	public void clickRateshopSearchBtn(ChromeDriver driver)
 	{
@@ -40,7 +40,7 @@ public class GUI_CreateReservation_MOP_Payless
 		// Read input from excel
 		for (int k = 1; k <= 30; k++)
 		{
-			GUI_CreateReservation_MOP_Payless avis = new GUI_CreateReservation_MOP_Payless();
+			Payless_GUI_CreateReservation_MOP avis = new Payless_GUI_CreateReservation_MOP();
 			ReadWriteExcel rwe = new ReadWriteExcel("C:\\Selenium\\TestData\\AVIS_GUITestData_CreateReservation_MOP.xlsx");
 			String Execute = rwe.getCellData("Avis_GUI", k, 2);
 			

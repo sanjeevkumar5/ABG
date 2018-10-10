@@ -24,15 +24,16 @@ import pomClasses.ReadWriteExcel;
 
 /**
  * '#############################################################################################################################
- * SCRIPT NAME : GUI_CreateReservation_MOP_AVIS BRAND : AVIS DESCRIPTION :
- * Create Reservation with different Method of Payments. FUNCTIONAL AREA :
- * Reservation Rates Screen PRECONDITION : All the required Test Data should be
- * available in Test Data Sheet. OUTPUT : Reservation should be created
- * successfully.
+ * SCRIPT NAME     : AVIS_GUI_CreateReservation_MOP
+ * BRAND           : AVIS
+ * DESCRIPTION     : Create Reservation with different Method of Payments.
+ * FUNCTIONAL AREA : Reservation Rates Screen.
+ * PRECONDITION    : All the required Test Data should be available in Test Data Sheet.
+ * OUTPUT          : Reservation should be created successfully.
  * '#############################################################################################################################
  **/
 
-public class GUI_CreateReservation_MOP_AVIS {
+public class AVIS_GUI_CreateReservation_MOP {
 	public void clickRateshopSearchBtn(ChromeDriver driver) {
 		JavascriptExecutor jse = (JavascriptExecutor) driver;
 		String clickSearchJS = "document.getElementById('searchCommandLinkResRateCode').click()";
@@ -58,7 +59,7 @@ public class GUI_CreateReservation_MOP_AVIS {
 
 			// Read input from excel
 			for (int k = 1; k <= 30; k++) {
-				GUI_CreateReservation_MOP_AVIS avis = new GUI_CreateReservation_MOP_AVIS();
+				AVIS_GUI_CreateReservation_MOP avis = new AVIS_GUI_CreateReservation_MOP();
 				ReadWriteExcel rwe = new ReadWriteExcel(
 						"C:\\Selenium\\TestData\\AVIS_GUITestData_CreateReservation_MOP.xlsx");
 				String Execute = rwe.getCellData("Avis_GUI", k, 2);
