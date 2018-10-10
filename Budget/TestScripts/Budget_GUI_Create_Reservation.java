@@ -47,7 +47,7 @@ import pomClasses.ReadWriteExcel;
  * '#############################################################################################################################
  **/
 
-public class Avis_GUI_Create_Reservation {
+public class Budget_GUI_Create_Reservation {
 	public void clickRateshopSearchBtn(ChromeDriver driver) {
 		JavascriptExecutor jse = (JavascriptExecutor) driver;
 		String clickSearchJS = "document.getElementById('searchCommandLinkResRateCode').click()";
@@ -69,10 +69,10 @@ public class Avis_GUI_Create_Reservation {
 
 			// Read input from excel
 			for (int k = 1; k <= 20; k++) {
-				Avis_GUI_Create_Reservation avis = new Avis_GUI_Create_Reservation();
+				Budget_GUI_Create_Reservation avis = new Budget_GUI_Create_Reservation();
 				ReadWriteExcel rwe = new ReadWriteExcel(
-						"C:\\GUI_Automation\\Selenium\\GUI_TestDataSheets\\AVIS_GUITestData_CreateReservation.xlsx");
-				String Execute = rwe.getCellData("Avis_GUI", k, 2);
+						"C:\\GUI_Automation\\Selenium\\GUI_TestDataSheets\\Budget_GUITestData_CreateReservation.xlsx");
+				String Execute = rwe.getCellData("Budget_GUI", k, 2);
 
 				if (Execute.equals("Y")) {
 					System.setProperty("webdriver.chrome.driver",
@@ -86,29 +86,29 @@ public class Avis_GUI_Create_Reservation {
 					driver.manage().window().maximize();
 					driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 					System.out.println(" iteration " + k);
-					String TCName = rwe.getCellData("Avis_GUI", k, 4);
-					String clientURL = rwe.getCellData("Avis_GUI", k, 6);
-					String outSTA = rwe.getCellData("Avis_GUI", k, 7);
+					String TCName = rwe.getCellData("Budget_GUI", k, 4);
+					String clientURL = rwe.getCellData("Budget_GUI", k, 6);
+					String outSTA = rwe.getCellData("Budget_GUI", k, 7);
 					String thinClient = clientURL + outSTA;
-					String uName = rwe.getCellData("Avis_GUI", k, 8);
-					String pswd = rwe.getCellData("Avis_GUI", k, 9);
-					String lstname = rwe.getCellData("Avis_GUI", k, 10);
-					String fstname = rwe.getCellData("Avis_GUI", k, 11);
-					String codte = rwe.getCellData("Avis_GUI", k, 12);
-					String cotme = rwe.getCellData("Avis_GUI", k, 13);
-					String insta = rwe.getCellData("Avis_GUI", k, 14);
-					String cidte = rwe.getCellData("Avis_GUI", k, 15);
-					String citme = rwe.getCellData("Avis_GUI", k, 16);
-					String carGrp = rwe.getCellData("Avis_GUI", k, 17);
-					String awd = rwe.getCellData("Avis_GUI", k, 18);
-					String FTN = rwe.getCellData("Avis_GUI", k, 19);
-					String cardname = rwe.getCellData("Avis_GUI", k, 20);
-					String cardNo = rwe.getCellData("Avis_GUI", k, 21);
+					String uName = rwe.getCellData("Budget_GUI", k, 8);
+					String pswd = rwe.getCellData("Budget_GUI", k, 9);
+					String lstname = rwe.getCellData("Budget_GUI", k, 10);
+					String fstname = rwe.getCellData("Budget_GUI", k, 11);
+					String codte = rwe.getCellData("Budget_GUI", k, 12);
+					String cotme = rwe.getCellData("Budget_GUI", k, 13);
+					String insta = rwe.getCellData("Budget_GUI", k, 14);
+					String cidte = rwe.getCellData("Budget_GUI", k, 15);
+					String citme = rwe.getCellData("Budget_GUI", k, 16);
+					String carGrp = rwe.getCellData("Budget_GUI", k, 17);
+					String bcd = rwe.getCellData("Budget_GUI", k, 18);
+					String FTN = rwe.getCellData("Budget_GUI", k, 19);
+					String cardname = rwe.getCellData("Budget_GUI", k, 20);
+					String cardNo = rwe.getCellData("Budget_GUI", k, 21);
 					// System.out.print("excel card number in script :"
 					// +cardNo);
-					String expireMonth = rwe.getCellData("Avis_GUI", k, 22);
-					String expireYear = rwe.getCellData("Avis_GUI", k, 23);
-					String reason = rwe.getCellData("Avis_GUI", k, 24);
+					String expireMonth = rwe.getCellData("Budget_GUI", k, 22);
+					String expireYear = rwe.getCellData("Budget_GUI", k, 23);
+					String reason = rwe.getCellData("Budget_GUI", k, 24);
 
 					/* Open GUI URL's */
 					// System.out.println(" token URL value : " + tokenURL);
@@ -120,7 +120,7 @@ public class Avis_GUI_Create_Reservation {
 					Thread.sleep(500);
 					/* Enter Customer Informations */
 					/* Enter FTN */
-					if (rwe.getCellData("Avis_GUI", k, 19).isEmpty()) {
+					if (rwe.getCellData("Budget_GUI", k, 19).isEmpty()) {
 						System.out.println("No FTN added");
 					} else {
 						functions.expandToggleBtn();
@@ -129,10 +129,10 @@ public class Avis_GUI_Create_Reservation {
 					}
 					functions.enterCustomerInformation(lstname, fstname, codte, cotme, insta, cidte, citme);
 					/* Enter AWD */
-					if (awd.isEmpty()) {
+					if (bcd.isEmpty()) {
 						System.out.println("No Avis Discount Number Added");
 					} else {
-						functions.enterAWD(awd);
+						functions.enterAWD(bcd);
 					}
 
 					/* Select car group */
@@ -155,10 +155,10 @@ public class Avis_GUI_Create_Reservation {
 								/* Add Insurances */
 								Thread.sleep(5000);
 								functions.expandProtectionCoverageSection();
-								if (rwe.getCellData("Avis_GUI", k, 25).isEmpty()) {
+								if (rwe.getCellData("Budget_GUI", k, 25).isEmpty()) {
 									System.out.print("No Insurance selected");
 								} else {
-									String[] insVal = rwe.getCellData("Avis_GUI", k, 25).split("-");
+									String[] insVal = rwe.getCellData("Budget_GUI", k, 25).split("-");
 									for (String e : insVal) {
 										WebDriverWait wait1 = new WebDriverWait(driver, 10);
 										if (e.equalsIgnoreCase("LDW")) {
@@ -171,7 +171,7 @@ public class Avis_GUI_Create_Reservation {
 											} else {
 												break;
 											}
-										} else if (e.equalsIgnoreCase("PAI")) {
+										} else if (e.equalsIgnoreCase("PAE")) {
 											WebElement insurace2 = driver.findElement(
 													By.id("menulist:rateshopContainer:resForm:coveragePaiYesNo"));
 											Select insPAI = new Select(insurace2);
@@ -181,7 +181,7 @@ public class Avis_GUI_Create_Reservation {
 											} else {
 												break;
 											}
-										} else if (e.equalsIgnoreCase("PEP")) {
+										} else if (e.equalsIgnoreCase("ESP")) {
 											WebElement insurace3 = driver.findElement(
 													By.id("menulist:rateshopContainer:resForm:coveragePepYesNo"));
 											Select insPEP = new Select(insurace3);
@@ -191,7 +191,7 @@ public class Avis_GUI_Create_Reservation {
 											} else {
 												break;
 											}
-										} else if (e.equalsIgnoreCase("ALI")) {
+										} else if (e.equalsIgnoreCase("SLI")) {
 											WebElement insurace4 = driver.findElement(
 													By.id("menulist:rateshopContainer:resForm:coverageAliYesNo"));
 											Select insALI = new Select(insurace4);
@@ -220,10 +220,10 @@ public class Avis_GUI_Create_Reservation {
 								/*
 								 * Add CounterProducts
 								 */
-								if (rwe.getCellData("Avis_GUI", k, 26).isEmpty()) {
+								if (rwe.getCellData("Budget_GUI", k, 26).isEmpty()) {
 									System.out.print("No CounterProduct selected");
 								} else {
-									String[] cpVal = rwe.getCellData("Avis_GUI", k, 26).split("-");
+									String[] cpVal = rwe.getCellData("Budget_GUI", k, 26).split("-");
 									for (String e : cpVal) {
 										WebDriverWait wait = new WebDriverWait(driver, 10);
 										try {
@@ -246,16 +246,16 @@ public class Avis_GUI_Create_Reservation {
 													break;
 												}
 											} else if (e.equalsIgnoreCase("CSS")) {
-												WebElement cp3 = driver.findElement(By.id("productQuantity34"));
+												WebElement cp3 = driver.findElement(By.id("productQuantityYesNo0"));
 												Select cpCSS = new Select(cp3);
 												wait.until(ExpectedConditions.visibilityOf(cp3));
 												if (cp3.isDisplayed()) {
-													cpCSS.selectByVisibleText("1");
+													cpCSS.selectByVisibleText("Y");
 												} else {
 													break;
 												}
-											} else if (e.equalsIgnoreCase("GPS")) {
-												WebElement cp4 = driver.findElement(By.id("productQuantityYesNo6"));
+											} else if (e.equalsIgnoreCase("CSD")) {
+												WebElement cp4 = driver.findElement(By.id("productQuantityYesNo1"));
 												Select cpGPS = new Select(cp4);
 												wait.until(ExpectedConditions.visibilityOf(cp4));
 												if (cp4.isDisplayed()) {
@@ -263,8 +263,17 @@ public class Avis_GUI_Create_Reservation {
 												} else {
 													break;
 												}
-											} else if (e.equalsIgnoreCase("RSN")) {
-												WebElement cp5 = driver.findElement(By.id("productQuantityYesNo11"));
+											} else if (e.equalsIgnoreCase("GPS")) {
+												WebElement cp4 = driver.findElement(By.id("productQuantityYesNo2"));
+												Select cpGPS = new Select(cp4);
+												wait.until(ExpectedConditions.visibilityOf(cp4));
+												if (cp4.isDisplayed()) {
+													cpGPS.selectByVisibleText("Y");
+												} else {
+													break;
+												}
+											}else if (e.equalsIgnoreCase("RSN")) {
+												WebElement cp5 = driver.findElement(By.id("productQuantityYesNo5"));
 												Select cpRSN = new Select(cp5);
 												wait.until(ExpectedConditions.visibilityOf(cp5));
 												if (cp5.isDisplayed()) {
@@ -290,9 +299,17 @@ public class Avis_GUI_Create_Reservation {
 												} else {
 													break;
 												}
-
+											} else if (e.equalsIgnoreCase("XMR")) {
+												WebElement cp7 = driver.findElement(By.id("productQuantityYesNo11"));
+												Select cpESP = new Select(cp7);
+												wait.until(ExpectedConditions.visibilityOf(cp7));
+												if (cp7.isDisplayed()) {
+													cpESP.selectByVisibleText("Y");
+												} else {
+													break;
+												}
 											} else if (e.equalsIgnoreCase("SNB")) {
-												WebElement cp8 = driver.findElement(By.id("productQuantityYesNo11"));
+												WebElement cp8 = driver.findElement(By.id("productQuantityYesNo7"));
 												Select cpSNB = new Select(cp8);
 												if (cp8.isDisplayed()) {
 													wait.until(ExpectedConditions.visibilityOf(cp8));
@@ -315,7 +332,7 @@ public class Avis_GUI_Create_Reservation {
 								Thread.sleep(1000);
 								String Resmsg = driver
 										.findElement(By.xpath("//*[@id='templateInfoForm:templateInfoMsg']")).getText();
-								rwe.setCellData("Avis_GUI", k, 40, Resmsg); // write
+								rwe.setCellData("Budget_GUI", k, 40, Resmsg); // write
 																			// respopup
 																			// in
 																			// excel
@@ -351,7 +368,7 @@ public class Avis_GUI_Create_Reservation {
 										} else {
 											if (j == 2) {
 												val = val.replaceAll("[*]", ""); // Remover * before rates
-												rwe.setCellData("Avis_GUI", k, a, val);
+												rwe.setCellData("Budget_GUI", k, a, val);
 												a++;
 											}
 										}
@@ -367,11 +384,11 @@ public class Avis_GUI_Create_Reservation {
 
 								test = extent.createTest(TCName);
 
-								if (rwe.getCellData("Avis_GUI", k, 27).isEmpty()) {
-									rwe.setCellData("Avis_GUI", k, 41, "FAIL");
+								if (rwe.getCellData("Budget_GUI", k, 27).isEmpty()) {
+									rwe.setCellData("Budget_GUI", k, 41, "FAIL");
 									test.log(Status.FAIL, "Fail");
 								} else {
-									rwe.setCellData("Avis_GUI", k, 41, "PASS");
+									rwe.setCellData("Budget_GUI", k, 41, "PASS");
 									test.log(Status.PASS, "Pass");
 								}
 							} // end of inner if
@@ -387,7 +404,7 @@ public class Avis_GUI_Create_Reservation {
 							String[] RateShopErrorMsg1 = RateShopErrorMsg.split("Base Rate");
 							String RSerrmsg = RateShopErrorMsg1[1];
 							System.out.println("Rate shop error msg:" + RSerrmsg);
-							rwe.setCellData("Avis_GUI", k, 40, RSerrmsg);
+							rwe.setCellData("Budget_GUI", k, 40, RSerrmsg);
 							driver.findElement(By.xpath("//input[@id='cancelButton']")).click();
 							Thread.sleep(2000);
 							functions.logout();
