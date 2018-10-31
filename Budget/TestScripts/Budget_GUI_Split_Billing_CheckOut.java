@@ -48,7 +48,7 @@ import pomClasses.ReadWriteExcel;
 public class Budget_GUI_Split_Billing_CheckOut
 {
    ExtentReports extent; //TestNG Extent Reports Changes.
-   ExtentTest test;     //TestNG Extent Reports Changes.
+   ExtentTest test;      //TestNG Extent Reports Changes.
    
    @BeforeTest //TestNG Extent Reports Changes.
    public void startReport() //TestNG Extent Reports Changes.

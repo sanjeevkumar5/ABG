@@ -43,7 +43,7 @@ public class Budget_GUI_ReadyLine_Regression
 	ExtentReports extent; //TestNG Extent Reports Changes.
 	ExtentTest test;     //TestNG Extent Reports Changes.
 	
-	@BeforeTest //TestNG Extent Reports Changes.
+	@BeforeTest  //TestNG Extent Reports Changes.
 	public void startReport() //TestNG Extent Reports Changes.
 	{
 		extent = Extentmanager.GetExtent(this.getClass().getSimpleName()); //TestNG Extent Reports Changes.
