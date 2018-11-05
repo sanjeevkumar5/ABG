@@ -178,7 +178,105 @@ public class GUIFunctions{
 	private  WebElement btn_LogOut;
 	
 	
-	/*Excel functionality to get and set data in excel cell */
+	/*Newly added objects*/
+	/*Display Rental Screen Objects */
+	@FindBy(id="menulist:dispormodContainer:rentalSearchForm:searchString")
+	public  WebElement txt_displayRAResMVA;
+
+	@FindBy(id="searchCommandLinkDisplayRental") 
+	public  WebElement btn_SearchDisplayRAResMVA;
+
+	@FindBy(xpath= "//button[@class='dropdown-toggle renExchangeMenuClass']//span[@class='caret']")
+	public  WebElement btn_exchngOption;
+
+	@FindBy(xpath="//a[@class='onTheLotClass']")
+	private  WebElement elm_Onthelot;
+
+	@FindBy(xpath="//a[@class='offTheLotClass ng-binding']")
+	private  WebElement elm_Offthelot;
+
+	@FindBy(id="vehicleExchange:vehicleExchangePopup:vxgnewmva")
+	private  WebElement txtMVAnumber;	
+
+	@FindBy(id="vehicleExchange:vehicleExchangePopup:vxgnewmileage")
+	private  WebElement txtMileage;	
+
+	@FindBy(id="vehicleExchange:vehicleExchangePopup:vxgnewfuelLevel")
+	private  WebElement ddl_Fuel;
+
+	@FindBy(id="vehicleExchange:vehicleExchangePopup:vehicleExgButton ui-btn")
+	private  WebElement btn_onthelotok;
+
+	@FindBy(id="rentalRepromptDialog:vehExgRepromptForm:vehExgRepromptButton")
+	private  WebElement btn_onthelotenter;
+
+	@FindBy(id="rentalRepromptDialog:vehExgRepromptForm:vehExgRepromptButton")
+	private  WebElement btn_onthelotenterone;
+
+	@FindBy(id="rentalRepromptDialog:vehExgRepromptForm:repromptValue")
+	private  WebElement txtmethpay;	
+
+	@FindBy(id="menulist:rateshopContainer:resForm:payMethod") 
+	public  WebElement dd_otherMOP;
+	
+	/*Vehicle Exchange Objects*/
+	@FindBy(id="vehicleExchange:vehicleExchangePopup:mileagein")
+	public  WebElement txt_VEMileageIn;
+
+	@FindBy(id="vehicleExchange:vehicleExchangePopup:fuelSvc")
+	private  WebElement ddl_prchsfuel;
+
+	@FindBy(id="vehicleExchange:vehicleExchangePopup:fuelin")
+	private  WebElement ddl_fuelin;
+
+	@FindBy(id="vehicleExchange:vehicleExchangePopup:vxgadjamt")
+	public  WebElement txt_VEadjstmnt;
+
+	@FindBy(id="vehicleExchange:vehicleExchangePopup:vehdamaged")
+	private  WebElement ddl_vehdamaged;
+
+	@FindBy(id="vehicleExchange:vehicleExchangePopup:accidentreported")
+	private  WebElement ddl_accreport;
+
+	@FindBy(id="vehicleExchange:vehicleExchangePopup:rentalFuelOtherType")
+	private  WebElement ddl_fuelother;
+
+	@FindBy(id="vehicleExchange:vehicleExchangePopup:rentalFuelOtherReason")
+	private  WebElement ddl_reason;
+
+	@FindBy(id="vehicleExchange:vehicleExchangePopup:rentalFuelOtherAmount")
+	private  WebElement txt_amount;
+
+	@FindBy(id="vehicleExchange:vehicleExchangePopup:onewayFee")
+	private  WebElement txt_oneway;
+
+	@FindBy(id="vehicleExchange:vehicleExchangePopup:miscCode")
+	private  WebElement ddl_misc;
+
+	@FindBy(id="vehicleExchange:vehicleExchangePopup:miscFee")
+	private  WebElement txt_miscfee;
+
+	@FindBy(id="vehicleExchange:vehicleExchangePopup:vxgremarks")
+	private  WebElement txt_VEremarks;
+
+	@FindBy(id="vehicleExchange:vehicleExchangePopup:vehicleExgButton")
+	private  WebElement btn_VEoffthelotok;
+
+	@FindBy(id="rentalRepromptDialog:vehExgRepromptForm:vehExgRepromptButton")
+	private  WebElement btn_VEoffthelotokenter;
+	
+
+    @FindBy(id="vehicleExchange:vehicleExchangePopup:delayedExchangeFlag")
+    private  WebElement btn_offthelotDelayed;
+
+    @FindBy(id="vehicleExchange:vehicleExchangePopup:exchangeDate_hid")
+    private  WebElement txt_dlydInDate;
+
+    @FindBy(id="vehicleExchange:vehicleExchangePopup:exchangeTime")
+    private  WebElement txt_dlydInTime;
+	
+
+	//GUI Re-Usable Functions
 
 	/*Open GUI Tabs*/
 	public void openURL(String thinClient) throws InterruptedException, AWTException
@@ -320,7 +418,7 @@ public class GUIFunctions{
         Select cardDD = new Select(dd_paymentCard);
         cardDD.selectByVisibleText(cardName);
         txt_cardNumber.click();
-        Thread.sleep(1000);
+        Thread.sleep(2000);
         txt_cardNumber.sendKeys(cardNumber);
         txt_expiryMonth.sendKeys(month);
         txt_expiryYear.sendKeys(year);	
@@ -422,4 +520,215 @@ public class GUIFunctions{
         driver.findElement(By.id("searchCommandLink")).click();
 	}
 	
+	
+	 /*Newly added Functions*/
+	
+	 public void clickRateshopSearchBtn(ChromeDriver driver)
+	 {
+	   JavascriptExecutor jse = (JavascriptExecutor) driver;
+	   String clickSearchJS = "document.getElementById('searchCommandLinkResRateCode').click()";
+	   jse.executeScript(clickSearchJS);
+	 }	
+
+     public void enterSearchRAResMVAnumber(String raNumber)
+     {
+       txt_displayRAResMVA.sendKeys(raNumber);
+     }
+    
+     public void enterOtherMOP(String MOP)
+     {
+    	Select methodDD = new Select(dd_otherMOP);
+    	methodDD.selectByVisibleText(MOP);
+     }
+     
+     public void enterAllCardPaymentInformations(String cardName, String cardNumber, String month, String year, String reason)
+     {
+        Select cardDD = new Select(dd_paymentCard);
+        cardDD.selectByVisibleText(cardName);
+        txt_cardNumber.sendKeys(cardNumber);
+        Select rsnDD = new Select(dd_paymentReason); 
+        if(cardName.equalsIgnoreCase("Airplus"))
+        {
+          rsnDD.selectByVisibleText(reason);
+        }
+        else
+        {   
+           txt_expiryMonth.sendKeys(month);
+           txt_expiryYear.sendKeys(year);	
+           rsnDD.selectByVisibleText(reason);
+        }
+      }	
+
+     public void exchangeOptions()
+     {
+        if (btn_exchngOption.isDisplayed())
+        {
+          System.out.println("Exchange button exists");
+          btn_exchngOption.click();
+        } 
+        else
+        {
+          System.out.println("Exchange button does not exist");
+        }
+     }
+     
+     public void onoffthelot(String exchngOption) throws InterruptedException
+     {
+       if(exchngOption.equalsIgnoreCase("On the Lot Exchange"))
+       {
+         Thread.sleep(3000);
+         elm_Onthelot.click();
+       } 
+       else if(exchngOption.equalsIgnoreCase("Off the Lot Exchange"))
+       {
+         Thread.sleep(3000);
+         elm_Offthelot.click();
+       }
+     }
+     
+     public void onthelottransaction(String MVAnumber, String Mileage, String Fuel) throws InterruptedException
+     {
+        txtMVAnumber.sendKeys(MVAnumber);
+        Thread.sleep(2000);
+        txtMileage.clear();
+        txtMileage.sendKeys(Mileage);
+        Select fuelDD = new Select(ddl_Fuel);
+        fuelDD.selectByVisibleText(Fuel);
+     }
+     
+     public void onthelotclickokBtn(String methpay) throws InterruptedException
+     {
+        btn_onthelotok.click();
+        Thread.sleep(3000);
+        btn_onthelotenterone.click();
+        Thread.sleep(3000);
+        txtmethpay.sendKeys(methpay); 
+        btn_onthelotenterone.click();
+        btn_onthelotenter.click();
+     }
+
+     public void notdelayedoffthelot(String mileageIn, String prchsfuel, String fuelin, String adjstmnt, String vehdamaged, String accreport, String fuelother, String reason, String amount, String oneway, String misc, String miscfee, String MVAnumber, String Mileage, String VEFuel, String remarks)  throws InterruptedException
+     {
+       txt_VEMileageIn.sendKeys(mileageIn);
+
+       Select prchsfuelDD = new Select(ddl_prchsfuel);
+       prchsfuelDD.selectByVisibleText(prchsfuel);
+
+       Select fuelinDD = new Select(ddl_fuelin);
+       fuelinDD.selectByVisibleText(fuelin);
+
+       txt_VEadjstmnt.sendKeys(adjstmnt);
+  
+       Select vehdamagedDD = new Select(ddl_vehdamaged);
+       vehdamagedDD.selectByVisibleText(vehdamaged);
+
+       Select accreportDD = new Select(ddl_accreport);
+       accreportDD.selectByVisibleText(accreport);		
+
+       Select fuelotherDD = new Select(ddl_fuelother);
+       fuelotherDD.selectByVisibleText(fuelother);
+
+       Select reasonDD = new Select(ddl_reason);
+       reasonDD.selectByVisibleText(reason);
+
+       txt_amount.sendKeys(amount);
+
+       txt_oneway.sendKeys(oneway);
+
+       Select miscDD = new Select(ddl_misc);
+       miscDD.selectByVisibleText(misc);
+
+       txt_miscfee.sendKeys(miscfee);
+
+       txtMVAnumber.sendKeys(MVAnumber);
+       Thread.sleep(2000);
+       txtMileage.clear();
+       txtMileage.sendKeys(Mileage);
+
+       Select fuelDD = new Select(ddl_Fuel);
+       fuelDD.selectByVisibleText(VEFuel);
+
+       txt_VEremarks.sendKeys(remarks);
+
+       btn_VEoffthelotok.click(); 
+     	    
+       Thread.sleep(10000);
+       btn_VEoffthelotokenter.click();
+     }
+     
+     public void delayedoffthelot(String dlydInDate, String dlydInTime, String mileageIn, String prchsfuel, String fuelin, String adjstmnt, String vehdamaged, String accreport, String fuelother, String reason, String amount, String oneway, String misc, String miscfee, String MVAnumber, String Mileage, String VEFuel, String remarks)  throws InterruptedException
+     {
+
+       btn_offthelotDelayed.click();
+
+       txt_dlydInDate.sendKeys(dlydInDate);
+
+       txt_dlydInTime.sendKeys(dlydInTime);
+
+       txt_VEMileageIn.sendKeys(mileageIn);
+
+       Select prchsfuelDD = new Select(ddl_prchsfuel);
+       prchsfuelDD.selectByVisibleText(prchsfuel);
+
+       Select fuelinDD = new Select(ddl_fuelin);
+       fuelinDD.selectByVisibleText(fuelin);
+
+       txt_VEadjstmnt.sendKeys(adjstmnt);
+
+       Select vehdamagedDD = new Select(ddl_vehdamaged);
+       vehdamagedDD.selectByVisibleText(vehdamaged);
+
+       Select accreportDD = new Select(ddl_accreport);
+       accreportDD.selectByVisibleText(accreport);		
+
+       Select fuelotherDD = new Select(ddl_fuelother);
+       fuelotherDD.selectByVisibleText(fuelother);
+
+       Select reasonDD = new Select(ddl_reason);
+       reasonDD.selectByVisibleText(reason);
+
+       txt_amount.sendKeys(amount);
+
+       txt_oneway.sendKeys(oneway);
+
+       Select miscDD = new Select(ddl_misc);
+       miscDD.selectByVisibleText(misc);
+
+       txt_miscfee.sendKeys(miscfee);
+
+       txtMVAnumber.sendKeys(MVAnumber);
+       Thread.sleep(2000);
+       txtMileage.clear();
+       txtMileage.sendKeys(Mileage);
+
+       Select fuelDD = new Select(ddl_Fuel);
+       fuelDD.selectByVisibleText(VEFuel);
+
+       txt_VEremarks.sendKeys(remarks);
+
+       btn_VEoffthelotok.click();
+
+       Thread.sleep(10000);
+       btn_VEoffthelotokenter.click();
+     }
+     
+     /*To get RA Number*/
+     public static int get_RA_Number(int RA_Num)
+     {
+         String str_RA_num = Integer.toString(RA_Num);
+         String ary_RA     = str_RA_num.substring(8, 9);
+         if (ary_RA.endsWith("6")) 
+         {
+                RA_Num = RA_Num + 4;
+         }
+
+         else 
+         {
+                RA_Num = RA_Num + 11;
+         }
+         return RA_Num;
+  }
+
+     
+     
 }
