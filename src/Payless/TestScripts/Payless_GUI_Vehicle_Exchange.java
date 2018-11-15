@@ -20,7 +20,6 @@ import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
 import com.gui.report.Extentmanager;
-
 import AVIS.CommonFunctions.GUIFunctions;
 import AVIS.CommonFunctions.ReadWriteExcel;
 
@@ -30,20 +29,19 @@ public class Payless_GUI_Vehicle_Exchange
 	ExtentTest test;
 
 	@BeforeTest
-	public void startReport() {
-
+	public void startReport() 
+	{
 		extent = Extentmanager.GetExtent();
-		//test = extent.createTest("GUI");
-
 	}
-//	public static void main(String[] args) throws IOException, Exception, FileNotFoundException {
+
 	@Test
-	public void test() throws Exception {
-		try {
+	public void test() throws Exception 
+	{
+		try 
+		{
 			// Read input from excel
 		for (int k = 1; k <= 30; k++)
 		{
-//			GUI_Vehicle_Exchange_Payless Payless = new GUI_Vehicle_Exchange_Payless();
 			ReadWriteExcel rwe = new ReadWriteExcel("C:\\Selenium\\TestData\\GUI_Payless_Vehicle_Exchange.xlsx");
 			String Execute = rwe.getCellData("INPUT_DATA", k, 2);
 			
@@ -52,7 +50,6 @@ public class Payless_GUI_Vehicle_Exchange
 				System.setProperty("webdriver.chrome.driver", "C:\\Selenium\\chromedriver.exe");
 				ChromeDriver driver = new ChromeDriver();
 				GUIFunctions functions = new GUIFunctions(driver);
-//				int a = 107;
 				driver.manage().window().maximize();
 				driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 				System.out.println(" Test Case No " + k);
@@ -85,10 +82,8 @@ public class Payless_GUI_Vehicle_Exchange
 				String dlydInTime  = rwe.getCellData("INPUT_DATA", k, 30);	
 				String methpay     = rwe.getCellData("INPUT_DATA", k, 31);	
 			
-				/* Open GUI URL's */
-				//System.out.println(" token URL value : " + tokenURL);
-				
 				functions.link(thinClient);
+
 				/* Login */
 				functions.login(uName, pswd);
 				functions.navigateToTab("DisplayRental");
@@ -129,22 +124,20 @@ public class Payless_GUI_Vehicle_Exchange
 				driver.findElement(By.id("modifyRentalDialog:successModDialogForm:rentalModCompDone")).click();
 				
 				Thread.sleep(1000);
-				//driver.findElement(By.id("modifyRentalDialog:successModDialogForm:rentalModCompDone")).click(); 
 
 				functions.logout();
 				Thread.sleep(1000);
 				functions.closeWindows();
 				test = extent.createTest(testCaseName);
 
-				if (rwe.getCellData("Avis_GUI", k, 32).isEmpty())
+				if (rwe.getCellData("INPUT_DATA", k, 32).isEmpty()) 
 				{
-					rwe.setCellData("Avis_GUI", k, 36, "FAIL");
+					rwe.setCellData("INPUT_DATA", k, 36, "FAIL");
 					test.log(Status.FAIL, "Fail");
-				}
-				else
+				} else 
 				{
 					test.log(Status.PASS, "Pass");
-					rwe.setCellData("Avis_GUI", k, 36, "PASS");
+					rwe.setCellData("INPUT_DATA", k, 36, "PASS");
 				}
 			}
 		}
