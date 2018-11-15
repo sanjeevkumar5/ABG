@@ -6,10 +6,6 @@ package pomClasses;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
-//import org.apache.poi.openxml4j.opc.OPCPackage;
-//import org.apache.poi.ss.usermodel.Workbook;
-//import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -18,14 +14,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  * @author csurek
  * 27-June-2018 - POM to read value from excel
  */
-public class ReadWriteExcel {
-//	public FileInputStream fis = null;
-//	public FileOutputStream fos = null;
-//	public XSSFWorkbook wb = null;
-//	public XSSFSheet sheet = null;
-//	public XSSFCell cell = null;
-//	String XLFilePath;
-	
+public class ReadWriteExcel {	
 	public FileInputStream fis;
 	public FileOutputStream fos;
 	public XSSFWorkbook wb;
