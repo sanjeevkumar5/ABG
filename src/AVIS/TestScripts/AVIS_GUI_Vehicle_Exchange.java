@@ -16,50 +16,43 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
 import com.gui.report.Extentmanager;
-
 import AVIS.CommonFunctions.GUIFunctions;
 import AVIS.CommonFunctions.ReadWriteExcel;
 
 public class AVIS_GUI_Vehicle_Exchange
 {
-
-
 	ExtentReports extent;
 	ExtentTest test;
 
 	@BeforeTest
-	public void startReport() {
-
+	public void startReport()
+	{
 		extent = Extentmanager.GetExtent();
-		//test = extent.createTest("GUI");
-
 	}
-//	public static void main(String[] args) throws IOException, Exception, FileNotFoundException {
+
 	@Test
-	public void test() throws Exception {
-		try {
+	public void test() throws Exception 
+	{
+		try 
+		{
 		// Read input from excel
 		for (int k = 1; k <= 30; k++)
 		{
-//			GUI_Vehicle_Exchange_AVIS avis = new GUI_Vehicle_Exchange_AVIS();
 			ReadWriteExcel rwe = new ReadWriteExcel("C:\\Selenium\\TestData\\GUI_AVIS_Vehicle_Exchange.xlsx");
 			String Execute = rwe.getCellData("INPUT_DATA", k, 2);
-			
 			if (Execute.equals("Y"))
 			{
 				System.setProperty("webdriver.chrome.driver", "C:\\Selenium\\chromedriver.exe");
 				ChromeDriver driver = new ChromeDriver();
 				GUIFunctions functions = new GUIFunctions(driver);
-//				int a = 107;
 				driver.manage().window().maximize();
 				driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
 				System.out.println(" Test Case No " + k);
-				String testCaseName   = rwe.getCellData("INPUT_DATA", k, 5);
+				String testCaseName= rwe.getCellData("INPUT_DATA", k, 5);
 				String clientURL   = rwe.getCellData("INPUT_DATA", k, 6);
 				String outSTA      = rwe.getCellData("INPUT_DATA", k, 9);
 				String thinClient  = clientURL+outSTA;
@@ -87,11 +80,9 @@ public class AVIS_GUI_Vehicle_Exchange
 				String dlydInDate  = rwe.getCellData("INPUT_DATA", k, 29);	
 				String dlydInTime  = rwe.getCellData("INPUT_DATA", k, 30);	
 				String methpay     = rwe.getCellData("INPUT_DATA", k, 31);	
-			
-				/* Open GUI URL's */
-				//System.out.println(" token URL value : " + tokenURL);
 				
 				functions.link(thinClient);
+
 				/* Login */
 				functions.login(uName, pswd);
 				functions.navigateToTab("DisplayRental");
@@ -140,25 +131,21 @@ public class AVIS_GUI_Vehicle_Exchange
 				
 				test = extent.createTest(testCaseName);
 
-				if (rwe.getCellData("Avis_GUI", k, 32).isEmpty())
+				if (rwe.getCellData("INPUT_DATA", k, 32).isEmpty()) 
 				{
-					rwe.setCellData("Avis_GUI", k, 36, "FAIL");
+					rwe.setCellData("INPUT_DATA", k, 36, "FAIL");
 					test.log(Status.FAIL, "Fail");
-				}
-				else
+				} else 
 				{
 					test.log(Status.PASS, "Pass");
-					rwe.setCellData("Avis_GUI", k, 36, "PASS");
+					rwe.setCellData("INPUT_DATA", k, 36, "PASS");
 				}
-			
 			}
-
 		}
-		
 	} finally 
 		{
 		// TODO: handle finally clause
 		extent.flush();
 	    }
-}
+	}
 }
