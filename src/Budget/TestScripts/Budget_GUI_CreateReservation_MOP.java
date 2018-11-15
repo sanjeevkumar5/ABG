@@ -1,13 +1,18 @@
+/**
+ * '#############################################################################################################################
+ * SCRIPT NAME     : Budget_GUI_CreateReservation_MOP
+ * BRAND           : Budget
+ * DESCRIPTION     : Create Reservation with different Method of Payments.
+ * FUNCTIONAL AREA : Reservation Rates Screen.
+ * PRECONDITION    : All the required Test Data should be available in Test Data Sheet.
+ * OUTPUT          : Reservation should be created successfully with different method of payments.
+ * '#############################################################################################################################
+ **/
 
 package Budget.TestScripts;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
-
-//import java.util.concurrent.TimeUnit;
-
-import org.apache.poi.EmptyFileException;
-import org.apache.xmlbeans.impl.piccolo.io.IllegalCharException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
@@ -18,26 +23,11 @@ import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
-import com.gui.report.Extentmanager;
-import com.aventstack.extentreports.ExtentReports;
-import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
-import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
-
 import com.gui.report.Extentmanager;
 import AVIS.CommonFunctions.GUIFunctions;
 import AVIS.CommonFunctions.ReadWriteExcel;
 
-/**
- * '#############################################################################################################################
- * SCRIPT NAME     : Budget_GUI_CreateReservation_MOP
- * BRAND           : Budget
- * DESCRIPTION     : Create Reservation with different Method of Payments.
- * FUNCTIONAL AREA : Reservation Rates Screen.
- * PRECONDITION    : All the required Test Data should be available in Test Data Sheet.
- * OUTPUT          : Reservation should be created successfully.
- * '#############################################################################################################################
- **/
 
 public class Budget_GUI_CreateReservation_MOP
 {
@@ -50,28 +40,28 @@ public class Budget_GUI_CreateReservation_MOP
 
 	ExtentReports extent;
 	ExtentTest test;
-//
+
 	@BeforeTest
 	public void startReport()
 	{
+
 		extent = Extentmanager.GetExtent();
-		//test = extent.createTest("GUI");
 	}
 
-	 //public static void main(String[] args) throws IllegalCharException, EmptyFileException;
-	// FileNotFoundException {
-	//@Test
-	public void test() throws Exception {
-		try {
-
+	@Test
+	public void test() throws Exception
+	{
+		try 
+		{
 			// Read input from excel
-			for (int k = 1; k <= 30; k++) {
+			for (int k = 1; k <= 30; k++) 
+			{
 				Budget_GUI_CreateReservation_MOP avis = new Budget_GUI_CreateReservation_MOP();
-				ReadWriteExcel rwe = new ReadWriteExcel(
-						"C:\\Selenium\\TestData\\Budget_GUITestData_CreateReservation_MOP.xlsx");
+				ReadWriteExcel rwe = new ReadWriteExcel("C:\\Selenium\\TestData\\Budget_GUITestData_CreateReservation_MOP.xlsx");
 				String Execute = rwe.getCellData("INPUT_DATA", k, 2);
 
-				if (Execute.equals("Y")) {
+				if (Execute.equals("Y"))
+				{
 					System.setProperty("webdriver.chrome.driver", "C:\\Selenium\\chromedriver.exe");
 					ChromeDriver driver = new ChromeDriver();
 					GUIFunctions functions = new GUIFunctions(driver);
@@ -83,63 +73,73 @@ public class Budget_GUI_CreateReservation_MOP
 					String clientURL        = rwe.getCellData("INPUT_DATA", k, 6);
 					String outSTA           = rwe.getCellData("INPUT_DATA", k, 7);
 					String thinClient       = clientURL + outSTA;
-					String uName            = rwe.getCellData("INPUT_DATA", k, 8);
-					String pswd             = rwe.getCellData("INPUT_DATA", k, 9);
-					String lstname          = rwe.getCellData("INPUT_DATA", k, 10);
-					String fstname          = rwe.getCellData("INPUT_DATA", k, 11);
-					String codte            = rwe.getCellData("INPUT_DATA", k, 12);
-					String cotme            = rwe.getCellData("INPUT_DATA", k, 13);
-					String insta            = rwe.getCellData("INPUT_DATA", k, 14);
-					String cidte            = rwe.getCellData("INPUT_DATA", k, 15);
-					String citme            = rwe.getCellData("INPUT_DATA", k, 16);
-					String carGrp           = rwe.getCellData("INPUT_DATA", k, 17);
+					String userName         = rwe.getCellData("INPUT_DATA", k, 8);
+					String password         = rwe.getCellData("INPUT_DATA", k, 9);
+					String lastName         = rwe.getCellData("INPUT_DATA", k, 10);
+					String firstName        = rwe.getCellData("INPUT_DATA", k, 11);
+					String checkOutDate     = rwe.getCellData("INPUT_DATA", k, 12);
+					String checkOutTime     = rwe.getCellData("INPUT_DATA", k, 13);
+					String inStation        = rwe.getCellData("INPUT_DATA", k, 14);
+					String checkInDate      = rwe.getCellData("INPUT_DATA", k, 15);
+					String checkInTime      = rwe.getCellData("INPUT_DATA", k, 16);
+					String carGroup         = rwe.getCellData("INPUT_DATA", k, 17);
 					String otherMOP         = rwe.getCellData("INPUT_DATA", k, 18);
-					String cardname         = rwe.getCellData("INPUT_DATA", k, 19);
+					String cardName         = rwe.getCellData("INPUT_DATA", k, 19);
 					String cardNumber       = rwe.getCellData("INPUT_DATA", k, 20);
 					String expireMonth      = rwe.getCellData("INPUT_DATA", k, 21);
 					String expireYear       = rwe.getCellData("INPUT_DATA", k, 22);
-					String reason           = rwe.getCellData("INPUT_DATA", k, 23);
+					String cardReason       = rwe.getCellData("INPUT_DATA", k, 23);
 
 					/* Open GUI URL's */
-					functions.openURL(thinClient);
+					functions.link(thinClient);
 
 					/* Login */
-					functions.login(uName, pswd);
+					functions.login(userName, password);
 					functions.navigateToTab("ReservationRates");
 					Thread.sleep(500);
 
 					/* Enter Customer Informations */
-					functions.enterCustomerInformation(lstname, fstname, codte, cotme, insta, cidte, citme);
+					functions.enterCustomerInformation(lastName, firstName, checkOutDate, checkOutTime, inStation, checkInDate, checkInTime);
 
 					/* Select car group */
-					functions.selectCarGroupByVT(carGrp);
+					functions.selectCarGroupByVT(carGroup);
 					Thread.sleep(2000);
 
 					/* Enter AWD */
 					avis.clickRateshopSearchBtn(driver);
-					ArrayList<WebElement> radio = (ArrayList<WebElement>) driver
-							.findElements(By.xpath("//input[@name='radioRate' and @type='radio']"));
-					try {
-						for (int i = 0; i < radio.size(); i++) {
-							if (radio.get(i).isDisplayed()) {
-								if (radio.get(i).isEnabled()) {
+					ArrayList<WebElement> radio = (ArrayList<WebElement>) driver.findElements(By.xpath("//input[@name='radioRate' and @type='radio']"));
+					try 
+					{
+						for (int i = 0; i < radio.size(); i++) 
+						{
+							if (radio.get(i).isDisplayed()) 
+							{
+								if (radio.get(i).isEnabled()) 
+								{
 									radio.get(i).click();
-									if (radio.get(i).isSelected()) {
+									if (radio.get(i).isSelected()) 
+									{
 										break;
 									}
 								}
 							}
 						}
-					} catch (Exception e) {
+					} 
+					catch (Exception e) 
+					{
 						driver.findElement(By.id("cancelButton")).click();
 						Thread.sleep(2000);
 						functions.selectCarGroupByIndex(0);
 						avis.clickRateshopSearchBtn(driver);
-						for (int l = 0; l < radio.size(); l++) {
-							if (radio.get(l).isDisplayed()) {
-								if (radio.get(l).isEnabled()) {
+						for (int l = 0; l < radio.size(); l++) 
+						{
+							if (radio.get(l).isDisplayed()) 
+							{
+								if (radio.get(l).isEnabled()) 
+								{
 									radio.get(l).click();
-									if (radio.get(l).isSelected()) {
+									if (radio.get(l).isSelected()) 
+									{
 										break;
 									}
 								}
@@ -153,56 +153,54 @@ public class Budget_GUI_CreateReservation_MOP
 
 					/* Enter MOP details */
 					functions.expandPaymentInfoSection();
-					if (otherMOP.equalsIgnoreCase("Credit Card/Debit Card")) {
-						functions.enterPaymentInformations(cardname, cardNumber, expireMonth, expireYear, reason);
-					} else {
+					if (otherMOP.equalsIgnoreCase("Credit Card/Debit Card")) 
+					{
+						functions.enterPaymentInformations(cardName, cardNumber, expireMonth, expireYear, cardReason);
+					} else 
+					{
 						functions.enterOtherMOP(otherMOP);
-
 					}
 
 					/* Create reservation */
 					functions.clickCreateReservationBtn();
 					Thread.sleep(1000);
-					functions.ScreenCapture("C:\\Selenium\\GUI_Results\\Budget_CR\\", testCaseName);
-					String Resmsg = driver
-							.findElement(By.xpath("//form[@id='templateInfoForm']//div[@class='modal-body']"))
-							.getText();
-					rwe.setCellData("NPUT_DATA", k, 39, Resmsg); // write
-																// respopup in
-																// excel
+					String Resmsg = driver.findElement(By.xpath("//form[@id='templateInfoForm']//div[@class='modal-body']")).getText();
+					rwe.setCellData("INPUT_DATA", k, 39, Resmsg); // write reservation pop-up in excel
 					Thread.sleep(1000);
-					driver.findElement(By
-							.xpath("//div[@class='modal-footer']//div[@class='row']//div[@class='col-md-12 text-left']//button[@value='OK']"))
-							.click();
-
+					driver.findElement(By.xpath("//div[@class='modal-footer']//div[@class='row']//div[@class='col-md-12 text-left']//button[@value='OK']")).click();
+					Thread.sleep(3000);
+					functions.ScreenCapture("C:\\Selenium\\ScreenShotsCaptured\\Budget\\", testCaseName);
+					
 					/* to print QV data in Excel */
+					WebElement res = driver.findElement(By.cssSelector("#quickViewPanel > div.panel-body > table > tbody > tr:nth-child(8) > td > div:nth-child(2) > div > table > tbody > tr > td:nth-child(2) > a > span"));
 
-					WebElement res = driver.findElement(By.cssSelector(
-							"#quickViewPanel > div.panel-body > table > tbody > tr:nth-child(8) > td > div:nth-child(2) > div > table > tbody > tr > td:nth-child(2) > a > span"));
-
-					try {
-						if (res.getText().isEmpty()) {
+					try 
+					{
+						if (res.getText().isEmpty()) 
+						{
 							WebDriverWait wait1 = new WebDriverWait(driver, 20);
 							wait1.until(ExpectedConditions.visibilityOf(res));
 						}
-					} catch (Exception e2) {
+					} catch (Exception e2) 
+					{
 						e2.printStackTrace();
 					}
 					WebElement table = driver.findElement(By.id("resQvForm"));
 					ArrayList<WebElement> rows = (ArrayList<WebElement>) table.findElements(By.tagName("tr"));
-					for (int i = 1; i < rows.size(); i++) {
-						ArrayList<WebElement> cells = (ArrayList<WebElement>) rows.get(i)
-								.findElements(By.tagName("td"));
-						for (int j = 0; j < cells.size(); j++) {
+					for (int i = 1; i < rows.size(); i++) 
+					{
+						ArrayList<WebElement> cells = (ArrayList<WebElement>) rows.get(i).findElements(By.tagName("td"));
+						for (int j = 0; j < cells.size(); j++) 
+						{
 							String val = cells.get(j).getText();
-							if (val.isEmpty()) {
+							if (val.isEmpty()) 
+							{
 								break;
-							} else {
-								if (j == 2) {
-									val = val.replaceAll("[*]", ""); // Remover
-																		// '*'
-																		// before
-																		// rates
+							} else 
+							{
+								if (j == 2) 
+								{
+									val = val.replaceAll("[*]", ""); // Remove '*' before rates
 									rwe.setCellData("INPUT_DATA", k, a, val);
 									a++;
 								}
@@ -218,24 +216,22 @@ public class Budget_GUI_CreateReservation_MOP
 					
 					test = extent.createTest(testCaseName);
 
-					if (rwe.getCellData("INPUT_DATA", k, 26).isEmpty())
+					if (rwe.getCellData("INPUT_DATA", k, 26).isEmpty()) 
 					{
 						rwe.setCellData("INPUT_DATA", k, 40, "FAIL");
 						test.log(Status.FAIL, "Fail");
-					}
-					else
+					} else 
 					{
 						test.log(Status.PASS, "Pass");
 						rwe.setCellData("INPUT_DATA", k, 40, "PASS");
 					}
-				}
-				else
+				} else 
 				{
 					System.out.println("Execution status is N for iteration " + k + "...");
 				}
+
 			}
-		}
-		finally
+		} finally 
 		{
 			// TODO: handle finally clause
 			extent.flush();
