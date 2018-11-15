@@ -1,4 +1,4 @@
-package pomClasses;
+package AVIS.CommonFunctions;
 
 import java.awt.AWTException;
 import java.awt.Robot;
@@ -40,8 +40,7 @@ public class GUIFunctions{
 	public GUIFunctions(WebDriver driver) throws Exception
 	{
 		this.driver = (ChromeDriver) driver;
-		PageFactory.initElements(driver, this);
-		
+		PageFactory.initElements(driver, this);	
 	}
 	
 	/* Login Page Objects */
@@ -130,6 +129,9 @@ public class GUIFunctions{
 	/*Payment Section Objects*/
 	@FindBy(id="resPaymentInfoPanel") 
 	public  WebElement sec_MOPSection;
+	
+	@FindBy(xpath="//div[@id='custPaymentInfoPanel']") 
+	public  WebElement sec_custMOPSection;
 
 	/*MOP Objects*/	
 	@FindBy(id="menulist:rateshopContainer:resForm:creditCard:swipe:ccType") 
@@ -274,12 +276,24 @@ public class GUIFunctions{
 
     @FindBy(id="vehicleExchange:vehicleExchangePopup:exchangeTime")
     private  WebElement txt_dlydInTime;
-	
 
 	//GUI Re-Usable Functions
 
 	/*Open GUI Tabs*/
 	public void openURL(String thinClient) throws InterruptedException, AWTException
+	{
+		try
+		{
+			driver.get(thinClient);
+			Assert.assertTrue(driver.getTitle().equals("Access Manager Login")); // check whether page with title Login is loaded
+		}
+		catch(Exception e)
+		{
+			System.out.println("Login page not found");
+		}
+	}
+	
+	public void link(String thinClient) throws InterruptedException, AWTException
 	{
 		try
 		{
@@ -290,7 +304,7 @@ public class GUIFunctions{
 		{
 			System.out.println("Login page not found");
 		}
-	}
+	} 
 	
 	public void login(String username, String password) throws InterruptedException
 	{
@@ -299,19 +313,20 @@ public class GUIFunctions{
 		btn_login.click();
 		Thread.sleep(3000);
 		String pageTitle = driver.getTitle();
+		
 	    if(pageTitle.equals("Avis Budget Group"))
 		{
-		  System.out.println(pageTitle);
+		    System.out.println(pageTitle);
 		}
 	    else
 		{
-		driver.navigate().refresh();
+	    	driver.navigate().refresh();
 	    }
 	}
 	
 	public void navigateToTab(String tabname)
 	{
-	try
+		try
 		{	
 			if(tabname.equalsIgnoreCase("CheckOut"))
 			{
@@ -342,13 +357,11 @@ public class GUIFunctions{
 				tab_Customer.click();
 			}
 		}
-		
 		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
-	}		
-
+	}
 	
 	public void enterCustomerInformation(String lastname, String firstname,String codate,String cotime, String instation, String cidate, String citime) throws InterruptedException
 	{
@@ -375,7 +388,6 @@ public class GUIFunctions{
 		String[] FTNValue = FTNNumber.split("/");
 		txt_FTNType.sendKeys(FTNValue[0]);
 		txt_FTNNumber.sendKeys(FTNValue[1]);
-		
 	}
 	
 	public void selectCarGroupByVT(String carGroup) throws InterruptedException
@@ -403,7 +415,6 @@ public class GUIFunctions{
 	/*Payment Info*/	
 	public void expandPaymentInfoSection() throws InterruptedException
 	{	
-		
 		 WebElement header_MOPPayment = sec_MOPSection.findElement(By.className("panel-heading"));
 
 		 WebElement btn_MOPSectionExpand = header_MOPPayment.findElement(By.className("pull-right"));
@@ -432,20 +443,21 @@ public class GUIFunctions{
 	{	
 		WebElement header_PAPPanel = sec_PAPSection.findElement(By.className("panel-heading"));
 
-		WebElement btn_PAPSectionExpand = header_PAPPanel.findElement(By.className("pull-right")) ;
-      try
-       {
-         if (btn_PAPSectionExpand.isDisplayed())
-          {
-       	  if(btn_PAPSectionExpand.isEnabled())
-       	    {
-       		btn_PAPSectionExpand.click();
-       	    }
-         } 
-      }
-      catch(Exception e3)
+		WebElement btn_PAPSectionExpand = header_PAPPanel.findElement(By.className("pull-right"));
+		
+		try
+		{
+			if (btn_PAPSectionExpand.isDisplayed())
+			{
+				if(btn_PAPSectionExpand.isEnabled())
+				{
+					btn_PAPSectionExpand.click();
+				}
+			}
+		}
+		catch(Exception e3)
         {
-       	 e3.printStackTrace();
+			e3.printStackTrace();
         }
 	}
 	
@@ -454,35 +466,42 @@ public class GUIFunctions{
 		btn_CreateReservation.click();
 	}
 	
-	public String get_Abs_Path(){
+	//Function to get absolute path.
+	
+	public String get_Abs_Path()
+	{
 		String Wk_dir = Paths.get("").toAbsolutePath().toString();
 		return Wk_dir.toString();
 	}
 	
-	public void create_folder_path(String Wk_dir){
-		
+	//Function to create folder structure.
+	
+	public void create_folder_path(String Wk_dir)
+	{
 		File path = new File(Wk_dir);
-		if (!path.exists()){
-			if(path.mkdirs()){
+		if (!path.exists())
+		{
+			if(path.mkdirs())
+			{
 				System.out.println("Folder Created successfully");
 				
 			}
-			else{
-				
+			else
+			{
+				System.out.println("Folder exist!!!");
+				System.out.println(path);
 			}
-			System.out.println("Folder exist!!!");
-			System.out.println(path);
 		}
-		
 	}
 	
+    //Function to capture screenshot.
+	
 	public void ScreenCapture(String Scr_Path ,String testcasename) throws IOException
-    { 
-		
-           Date d= new Date();
-           SimpleDateFormat sdf = new SimpleDateFormat("YYYYMMdd_HH-MM-SS");
-           File src= ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);     
-           FileUtils.copyFile(src,new File( Scr_Path +"\\"+testcasename+"_"+ sdf.format(d)+".png"));      
+    {
+       Date d= new Date();
+       SimpleDateFormat sdf = new SimpleDateFormat("YYYYMMdd_HH-MM-SS");
+       File src = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+       FileUtils.copyFile(src,new File( Scr_Path +"\\"+testcasename+"_"+ sdf.format(d)+".png"));
     }
 	
 	public void displayRA(String RANumber)
@@ -520,7 +539,6 @@ public class GUIFunctions{
         driver.findElement(By.id("searchCommandLink")).click();
 	}
 	
-	
 	 /*Newly added Functions*/
 	
 	 public void clickRateshopSearchBtn(ChromeDriver driver)
@@ -534,7 +552,12 @@ public class GUIFunctions{
      {
        txt_displayRAResMVA.sendKeys(raNumber);
      }
-    
+     
+     public void clickSearchBtnDisplayRAResMVA()
+ 	 {
+ 		btn_SearchDisplayRAResMVA.click();
+ 	 }
+     
      public void enterOtherMOP(String MOP)
      {
     	Select methodDD = new Select(dd_otherMOP);
@@ -557,7 +580,7 @@ public class GUIFunctions{
            txt_expiryYear.sendKeys(year);	
            rsnDD.selectByVisibleText(reason);
         }
-      }	
+     }	
 
      public void exchangeOptions()
      {
@@ -607,7 +630,7 @@ public class GUIFunctions{
         btn_onthelotenter.click();
      }
 
-     public void notdelayedoffthelot(String mileageIn, String prchsfuel, String fuelin, String adjstmnt, String vehdamaged, String accreport, String fuelother, String reason, String amount, String oneway, String misc, String miscfee, String MVAnumber, String Mileage, String VEFuel, String remarks)  throws InterruptedException
+     public void notdelayedoffthelot(String mileageIn, String prchsfuel, String fuelin, String adjstmnt, String vehdamaged, String accreport, String fuelother, String reason, String amount, String oneway, String misc, String miscfee, String MVAnumber, String Mileage, String VEFuel, String remarks, String methpay)  throws InterruptedException
      {
        txt_VEMileageIn.sendKeys(mileageIn);
 
@@ -658,77 +681,83 @@ public class GUIFunctions{
      
      public void delayedoffthelot(String dlydInDate, String dlydInTime, String mileageIn, String prchsfuel, String fuelin, String adjstmnt, String vehdamaged, String accreport, String fuelother, String reason, String amount, String oneway, String misc, String miscfee, String MVAnumber, String Mileage, String VEFuel, String remarks)  throws InterruptedException
      {
+    	 btn_offthelotDelayed.click();
 
-       btn_offthelotDelayed.click();
+    	 txt_dlydInDate.sendKeys(dlydInDate);
 
-       txt_dlydInDate.sendKeys(dlydInDate);
+    	 txt_dlydInTime.sendKeys(dlydInTime);
 
-       txt_dlydInTime.sendKeys(dlydInTime);
+    	 txt_VEMileageIn.sendKeys(mileageIn);
 
-       txt_VEMileageIn.sendKeys(mileageIn);
-
-       Select prchsfuelDD = new Select(ddl_prchsfuel);
-       prchsfuelDD.selectByVisibleText(prchsfuel);
-
-       Select fuelinDD = new Select(ddl_fuelin);
-       fuelinDD.selectByVisibleText(fuelin);
-
-       txt_VEadjstmnt.sendKeys(adjstmnt);
-
-       Select vehdamagedDD = new Select(ddl_vehdamaged);
-       vehdamagedDD.selectByVisibleText(vehdamaged);
-
-       Select accreportDD = new Select(ddl_accreport);
-       accreportDD.selectByVisibleText(accreport);		
-
-       Select fuelotherDD = new Select(ddl_fuelother);
-       fuelotherDD.selectByVisibleText(fuelother);
-
-       Select reasonDD = new Select(ddl_reason);
-       reasonDD.selectByVisibleText(reason);
-
-       txt_amount.sendKeys(amount);
-
-       txt_oneway.sendKeys(oneway);
-
-       Select miscDD = new Select(ddl_misc);
-       miscDD.selectByVisibleText(misc);
-
-       txt_miscfee.sendKeys(miscfee);
-
-       txtMVAnumber.sendKeys(MVAnumber);
-       Thread.sleep(2000);
-       txtMileage.clear();
-       txtMileage.sendKeys(Mileage);
-
-       Select fuelDD = new Select(ddl_Fuel);
-       fuelDD.selectByVisibleText(VEFuel);
-
-       txt_VEremarks.sendKeys(remarks);
-
-       btn_VEoffthelotok.click();
-
-       Thread.sleep(10000);
-       btn_VEoffthelotokenter.click();
+    	 Select prchsfuelDD = new Select(ddl_prchsfuel);
+    	 prchsfuelDD.selectByVisibleText(prchsfuel);
+	
+	     Select fuelinDD = new Select(ddl_fuelin);
+	     fuelinDD.selectByVisibleText(fuelin);
+	
+	     txt_VEadjstmnt.sendKeys(adjstmnt);
+	
+	     Select vehdamagedDD = new Select(ddl_vehdamaged);
+	     vehdamagedDD.selectByVisibleText(vehdamaged);
+	
+	     Select accreportDD = new Select(ddl_accreport);
+	     accreportDD.selectByVisibleText(accreport);		
+	
+	     Select fuelotherDD = new Select(ddl_fuelother);
+	     fuelotherDD.selectByVisibleText(fuelother);
+	
+	     Select reasonDD = new Select(ddl_reason);
+	     reasonDD.selectByVisibleText(reason);
+	
+	     txt_amount.sendKeys(amount);
+	
+	     txt_oneway.sendKeys(oneway);
+	
+	     Select miscDD = new Select(ddl_misc);
+	     miscDD.selectByVisibleText(misc);
+	
+	     txt_miscfee.sendKeys(miscfee);
+	
+	     txtMVAnumber.sendKeys(MVAnumber);
+	     Thread.sleep(2000);
+	     txtMileage.clear();
+	     txtMileage.sendKeys(Mileage);
+	
+	     Select fuelDD = new Select(ddl_Fuel);
+	     fuelDD.selectByVisibleText(VEFuel);
+	
+	     txt_VEremarks.sendKeys(remarks);
+	
+	     btn_VEoffthelotok.click();
+	
+	     Thread.sleep(10000);
+	     btn_VEoffthelotokenter.click();
      }
-     
+         
      /*To get RA Number*/
      public static int get_RA_Number(int RA_Num)
      {
          String str_RA_num = Integer.toString(RA_Num);
          String ary_RA     = str_RA_num.substring(8, 9);
-         if (ary_RA.endsWith("6")) 
+         if (ary_RA.endsWith("6"))
          {
-                RA_Num = RA_Num + 4;
+             RA_Num = RA_Num + 4;
          }
-
-         else 
+         else
          {
-                RA_Num = RA_Num + 11;
+             RA_Num = RA_Num + 11;
          }
          return RA_Num;
-  }
-
-     
-     
+     }
+     public void modifyPaymentInformations(String cardName, String cardNumber, String month, String year)
+ 	{
+         Select cardDD = new Select(dd_paymentCard);
+         cardDD.selectByVisibleText(cardName);
+         txt_cardNumber.sendKeys(cardNumber);
+         txt_expiryMonth.sendKeys(month);
+         txt_expiryYear.sendKeys(year);	
+         Select rsnDD = new Select(dd_paymentReason); 
+         //rsnDD.selectByVisibleText(reason);
+ 	}
+ 	
 }
