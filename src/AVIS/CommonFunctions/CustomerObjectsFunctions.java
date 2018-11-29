@@ -16,7 +16,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 /* Customer Tab Objects */
 
-
 public class CustomerObjectsFunctions {
 		
 	ChromeDriver driver;
