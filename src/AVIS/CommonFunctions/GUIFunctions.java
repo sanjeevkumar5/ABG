@@ -84,6 +84,48 @@ public class GUIFunctions{
 	@FindBy(id="menulist:rateshopContainer:resForm:firstName")
 	public  WebElement txt_firstname;
 	
+	/*Expand Toggle*/
+	
+	@FindBy(id="custToggle")
+	public  WebElement btn_toggle;
+	
+	@FindBy(id="menulist:rateshopContainer:resForm:wizardNumber")
+	public  WebElement txt_wizardNumber;
+	
+	@FindBy(id="menulist:rateshopContainer:resForm:rlicenseCountry")
+	public  WebElement txt_drLicCountry;
+	
+	@FindBy(id="menulist:rateshopContainer:resForm:rlicenseState")
+	public  WebElement txt_drLicState;
+	
+	@FindBy(id="menulist:rateshopContainer:resForm:licenseNumber")
+	public  WebElement txt_drLicNumber;
+	
+	@FindBy(id="menulist:rateshopContainer:resForm:dateOfBirth")
+	public  WebElement txt_drLicDOB;
+	
+	@FindBy(id="menulist:rateshopContainer:resForm:company")
+	public  WebElement txt_drLicCompany;
+	
+	@FindBy(id="menulist:rateshopContainer:resForm:address1")
+	public  WebElement txt_addr1;
+	
+	@FindBy(id="menulist:rateshopContainer:resForm:address2")
+	public  WebElement txt_addr2;
+	
+	@FindBy(id="menulist:rateshopContainer:resForm:address3")
+	public  WebElement txt_addr3;
+	
+	@FindBy(id="menulist:rateshopContainer:resForm:contactInfo")
+	public  WebElement txt_contactNumber;
+
+	@FindBy(xpath="//*[@id='menulist:rateshopContainer:resForm:rftnType']")
+	public  WebElement txt_FTNType;
+	
+	@FindBy(xpath="//*[@id='menulist:rateshopContainer:resForm:ftNumber']")
+	public  WebElement txt_FTNNumber;
+	
+	
 	@FindBy(id="menulist:rateshopContainer:resForm:checkout1_hid")
 	public  WebElement dtp_COdate;
 	
@@ -102,20 +144,13 @@ public class GUIFunctions{
 	@FindBy(xpath="//*[@id='menulist:rateshopContainer:resForm:carGroup']")
 	public  WebElement ddl_CarGroup;
 	
-	//expand toggle
-	@FindBy(id="custToggle")
-	public  WebElement btn_toggle;	
-	
 	/*DR LIC Details*/
-
-	@FindBy(xpath="//*[@id='menulist:rateshopContainer:resForm:rftnType']")
-	public  WebElement txt_FTNType;
-	
-	@FindBy(xpath="//*[@id='menulist:rateshopContainer:resForm:ftNumber']")
-	public  WebElement txt_FTNNumber;
 	
 	@FindBy(xpath="//*[@id='menulist:rateshopContainer:resForm:discountNumber']")
 	public  WebElement txt_AWD;
+	
+	@FindBy(xpath="//*[@id='menulist:rateshopContainer:resForm:coupon']")
+	public  WebElement txt_Coupon;
 	
 	@FindBy(id="searchCommandLinkResRateCode")
 	public  WebElement btn_RateShopSearch;
@@ -127,6 +162,7 @@ public class GUIFunctions{
 	public  WebElement btn_CreateReservation;
 	
 	/*Payment Section Objects*/
+	
 	@FindBy(id="resPaymentInfoPanel") 
 	public  WebElement sec_MOPSection;
 	
@@ -134,6 +170,9 @@ public class GUIFunctions{
 	public  WebElement sec_custMOPSection;
 
 	/*MOP Objects*/	
+    @FindBy(id="menulist:rateshopContainer:resForm:payMethod")
+    public WebElement dd_paymentMethod;
+    
 	@FindBy(id="menulist:rateshopContainer:resForm:creditCard:swipe:ccType") 
 	public  WebElement dd_paymentCard;
 	
@@ -276,24 +315,12 @@ public class GUIFunctions{
 
     @FindBy(id="vehicleExchange:vehicleExchangePopup:exchangeTime")
     private  WebElement txt_dlydInTime;
+	
 
 	//GUI Re-Usable Functions
 
 	/*Open GUI Tabs*/
 	public void openURL(String thinClient) throws InterruptedException, AWTException
-	{
-		try
-		{
-			driver.get(thinClient);
-			Assert.assertTrue(driver.getTitle().equals("Access Manager Login")); // check whether page with title Login is loaded
-		}
-		catch(Exception e)
-		{
-			System.out.println("Login page not found");
-		}
-	}
-	
-	public void link(String thinClient) throws InterruptedException, AWTException
 	{
 		try
 		{
@@ -304,7 +331,7 @@ public class GUIFunctions{
 		{
 			System.out.println("Login page not found");
 		}
-	} 
+	}
 	
 	public void login(String username, String password) throws InterruptedException
 	{
@@ -313,20 +340,19 @@ public class GUIFunctions{
 		btn_login.click();
 		Thread.sleep(3000);
 		String pageTitle = driver.getTitle();
-		
 	    if(pageTitle.equals("Avis Budget Group"))
 		{
-		    System.out.println(pageTitle);
+		  System.out.println(pageTitle);
 		}
 	    else
 		{
-	    	driver.navigate().refresh();
+		driver.navigate().refresh();
 	    }
 	}
 	
 	public void navigateToTab(String tabname)
 	{
-		try
+	try
 		{	
 			if(tabname.equalsIgnoreCase("CheckOut"))
 			{
@@ -357,16 +383,59 @@ public class GUIFunctions{
 				tab_Customer.click();
 			}
 		}
+		
 		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
+	}		
+
+	public void expandToggleBtn()
+	{
+		btn_toggle.click();
 	}
 	
-	public void enterCustomerInformation(String lastname, String firstname,String codate,String cotime, String instation, String cidate, String citime) throws InterruptedException
+	public void enterWizardNumber(String wizNo)
+	{
+		txt_wizardNumber.sendKeys(wizNo);
+	}
+	
+	public void enterCustomerName(String lastname, String firstname)
 	{
 		txt_lastname.sendKeys(lastname);
 		txt_firstname.sendKeys(firstname);
+	}
+	
+	public void enterDriverDetail(String drCountry, String drState, String drNumber, String drDOB, String drCompany,
+			                            String addr1, String addr2, String addr3, String contact) throws InterruptedException
+	{
+		txt_drLicCountry.sendKeys(drCountry);
+		txt_drLicState.sendKeys(drState);
+		txt_drLicNumber.sendKeys(drNumber);
+		txt_drLicDOB.sendKeys(drDOB);
+		txt_drLicCompany.sendKeys(drCompany);
+		txt_addr1.sendKeys(addr1);
+		txt_addr2.sendKeys(addr2);
+		txt_addr3.sendKeys(addr3);
+		txt_contactNumber.sendKeys(contact);
+	}
+
+	public void clickAgeField()
+	{
+        txt_drLicDOB.click();
+        txt_drLicCompany.click();
+	}
+	
+	public void enterFTN(String FTNNumber)
+	{
+		String[] FTNValue = FTNNumber.split("/");
+		txt_FTNType.sendKeys(FTNValue[0]);
+		txt_FTNNumber.sendKeys(FTNValue[1]);	
+	}
+	
+	
+	public void enterCustomerInformation(String codate,String cotime, String instation, String cidate, String citime) throws InterruptedException
+	{
 		dtp_COdate.sendKeys(codate);
 		txt_COtime.sendKeys(cotime);
 		txt_inSTA.sendKeys(instation);
@@ -376,24 +445,19 @@ public class GUIFunctions{
 		Thread.sleep(1000);
 		txt_CItime.sendKeys(citime);
 		Thread.sleep(1000);
-	}
-	
-	public void expandToggleBtn()
-	{
-		btn_toggle.click();
-	}
-	
-	public void enterFTN(String FTNNumber)
-	{
-		String[] FTNValue = FTNNumber.split("/");
-		txt_FTNType.sendKeys(FTNValue[0]);
-		txt_FTNNumber.sendKeys(FTNValue[1]);
+		txt_AWD.click();
 	}
 	
 	public void selectCarGroupByVT(String carGroup) throws InterruptedException
 	{
 	    Select carDD = new Select(ddl_CarGroup);
 	    carDD.selectByVisibleText(carGroup);		
+	}
+	
+	public void selectCarGroupByValue(String carGroup) throws InterruptedException
+	{
+	    Select carDD = new Select(ddl_CarGroup);
+	    carDD.selectByValue(carGroup);		
 	}
 	
 	public void selectCarGroupByIndex(int indexno) throws InterruptedException
@@ -412,9 +476,15 @@ public class GUIFunctions{
 		txt_AWD.sendKeys(AWD);
 	}
 	
+	public void enterCoupon (String cpn)
+	{
+		txt_Coupon.sendKeys(cpn);
+	}
+	
 	/*Payment Info*/	
 	public void expandPaymentInfoSection() throws InterruptedException
 	{	
+		
 		 WebElement header_MOPPayment = sec_MOPSection.findElement(By.className("panel-heading"));
 
 		 WebElement btn_MOPSectionExpand = header_MOPPayment.findElement(By.className("pull-right"));
@@ -437,27 +507,43 @@ public class GUIFunctions{
         rsnDD.selectByVisibleText(reason);
 	}
 	
+    public void Cash_qualified () 
+    {
+//      WebElement cmb_payment_Method = driver.findElementByXPath("//*[@id=\'menulist:rateshopContainer:resForm:payMethod\']");
+          Select  Pay_method = new Select(dd_paymentMethod);
+          Pay_method.selectByVisibleText("Cash Qualified");
+          WebElement txt_cash =driver.findElementByXPath("//*[@id=\'menulist:rateshopContainer:resForm:cashQualified:mopCash\']");
+          WebElement cash_amt = driver.findElementByXPath("//*[@id=\'quickViewPanel\']/div[2]/table/tbody/tr[25]/td/div[2]/div/div/table/tbody/tr/td[2]/span");
+          String cash_Amt = cash_amt.getAttribute("outerText");
+          cash_Amt= cash_Amt.replace("$","");
+          txt_cash.click();
+          txt_cash.sendKeys(cash_Amt);
+      }
+
 	/*Additional PRoducts*/
 	
 	public void expandProtectionCoverageSection()
 	{	
-		WebElement header_PAPPanel = sec_PAPSection.findElement(By.className("panel-heading"));
-
-		WebElement btn_PAPSectionExpand = header_PAPPanel.findElement(By.className("pull-right"));
-		
-		try
-		{
-			if (btn_PAPSectionExpand.isDisplayed())
-			{
-				if(btn_PAPSectionExpand.isEnabled())
-				{
-					btn_PAPSectionExpand.click();
-				}
-			}
-		}
-		catch(Exception e3)
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+//		js.executeScript("window.scrollTo(0, document.body.scrollHeight)");  //scroll till end of the page
+//		WebElement header_PAPPanel = sec_PAPSection.findElement(By.className("panel-heading"));
+		WebElement header_PAPPanel = sec_PAPSection.findElement(By.id("menulist:rateshopContainer:resForm:resCoveragesInfoPanel_header"));
+		WebElement btn_PAPSectionExpand = header_PAPPanel.findElement(By.id("menulist:checkoutContainer:checkoutForm:resCoveragesInfoPanel_span"));	
+        js.executeScript("arguments[0].scrollIntoView();", btn_PAPSectionExpand); //scroll till visibility of webelement
+		//WebElement btn_PAPSectionExpand = header_PAPPanel.findElement(By.className("pull-right")) ;
+      try
+       {
+         if (btn_PAPSectionExpand.isDisplayed())
+          {
+       	  if(btn_PAPSectionExpand.isEnabled())
+       	    {
+       		btn_PAPSectionExpand.click();
+       	    }
+         } 
+      }
+      catch(Exception e3)
         {
-			e3.printStackTrace();
+       	 e3.printStackTrace();
         }
 	}
 	
@@ -466,42 +552,66 @@ public class GUIFunctions{
 		btn_CreateReservation.click();
 	}
 	
-	//Function to get absolute path.
-	
-	public String get_Abs_Path()
-	{
+	public String get_Abs_Path(){
 		String Wk_dir = Paths.get("").toAbsolutePath().toString();
 		return Wk_dir.toString();
 	}
 	
-	//Function to create folder structure.
-	
-	public void create_folder_path(String Wk_dir)
-	{
+	public void create_folder_path(String Wk_dir){
+		
 		File path = new File(Wk_dir);
-		if (!path.exists())
-		{
-			if(path.mkdirs())
-			{
+		if (!path.exists()){
+			if(path.mkdirs()){
 				System.out.println("Folder Created successfully");
 				
 			}
-			else
-			{
-				System.out.println("Folder exist!!!");
-				System.out.println(path);
+			else{
+				
 			}
+			System.out.println("Folder exist!!!");
+			System.out.println(path);
 		}
+		
 	}
+    
+	//            cpn_Pro_element_no function returns the indexnos of the counter product which will help  building dynamic xpath during runtime
+    public String cpn_Pro_element_no (String Pro_code) {
+        String t_counterpro = Pro_code;
+        int a;
+        WebElement tbl_cont = driver.findElement(By.xpath("//*[@id='menulist:rateshopContainer:resForm:productsData_data']"));
+        String Tbl_Det = tbl_cont.getAttribute("outerText").toString();
+        String [] t_temp_det = Tbl_Det.split("\t");
+        
+        for ( a=0;a<t_temp_det.length -1;a++) {
+                        String [] cpn_pro = t_temp_det[a].split("\\n");
+                        int  ary_len_cpn_pro = cpn_pro.length;
+                        if (ary_len_cpn_pro ==1) {
+                                        ary_len_cpn_pro =0;
+                                        }
+                        else {
+                                        ary_len_cpn_pro =2;
+                                        }
+                        if (t_counterpro.trim().equals(cpn_pro[ary_len_cpn_pro].trim())) {
+                                        System.out.println(cpn_pro[ary_len_cpn_pro].trim());
+                                        break;
+                        }
+                        else {
+                                        System.out.println(cpn_pro[ary_len_cpn_pro].trim());
+                        }
+        }
+
+        return Integer.toString(a);
+        
+}
 	
-    //Function to capture screenshot.
-	
+	//Function to capture screenshot
 	public void ScreenCapture(String Scr_Path ,String testcasename) throws IOException
-    {
-       Date d= new Date();
-       SimpleDateFormat sdf = new SimpleDateFormat("YYYYMMdd_HH-MM-SS");
-       File src = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
-       FileUtils.copyFile(src,new File( Scr_Path +"\\"+testcasename+"_"+ sdf.format(d)+".png"));
+    { 
+		
+           Date d= new Date();
+           SimpleDateFormat sdf = new SimpleDateFormat("YYYYMMdd_HH-MM-SS");
+           File src= ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);     
+           FileUtils.copyFile(src,new File( Scr_Path +"\\"+testcasename+"_"+ sdf.format(d)+".png"));      
     }
 	
 	public void displayRA(String RANumber)
@@ -539,6 +649,7 @@ public class GUIFunctions{
         driver.findElement(By.id("searchCommandLink")).click();
 	}
 	
+	
 	 /*Newly added Functions*/
 	
 	 public void clickRateshopSearchBtn(ChromeDriver driver)
@@ -552,12 +663,12 @@ public class GUIFunctions{
      {
        txt_displayRAResMVA.sendKeys(raNumber);
      }
-     
-     public void clickSearchBtnDisplayRAResMVA()
- 	 {
+    
+ 	public void clickSearchBtnDisplayRAResMVA()
+ 	{
  		btn_SearchDisplayRAResMVA.click();
- 	 }
-     
+ 	} 
+ 	
      public void enterOtherMOP(String MOP)
      {
     	Select methodDD = new Select(dd_otherMOP);
@@ -580,7 +691,7 @@ public class GUIFunctions{
            txt_expiryYear.sendKeys(year);	
            rsnDD.selectByVisibleText(reason);
         }
-     }	
+      }	
 
      public void exchangeOptions()
      {
@@ -632,6 +743,80 @@ public class GUIFunctions{
 
      public void notdelayedoffthelot(String mileageIn, String prchsfuel, String fuelin, String adjstmnt, String vehdamaged, String accreport, String fuelother, String reason, String amount, String oneway, String misc, String miscfee, String MVAnumber, String Mileage, String VEFuel, String remarks, String methpay)  throws InterruptedException
      {
+            txt_VEMileageIn.sendKeys(mileageIn);
+            
+            Select prchsfuelDD = new Select(ddl_prchsfuel);
+            prchsfuelDD.selectByVisibleText(prchsfuel);
+            
+            Select fuelinDD = new Select(ddl_fuelin);
+            fuelinDD.selectByVisibleText(fuelin);
+            
+            txt_VEadjstmnt.sendKeys(adjstmnt);
+            
+            Select vehdamagedDD = new Select(ddl_vehdamaged);
+            vehdamagedDD.selectByVisibleText(vehdamaged);
+            
+            Select accreportDD = new Select(ddl_accreport);
+            accreportDD.selectByVisibleText(accreport);            
+            
+            Select fuelotherDD = new Select(ddl_fuelother);
+            fuelotherDD.selectByVisibleText(fuelother);
+            
+            Select reasonDD = new Select(ddl_reason);
+            reasonDD.selectByVisibleText(reason);
+            
+            txt_amount.sendKeys(amount);
+            
+            txt_oneway.sendKeys(oneway);
+            
+            Select miscDD = new Select(ddl_misc);
+            miscDD.selectByVisibleText(misc);
+            
+            txt_miscfee.sendKeys(miscfee);
+            
+            txtMVAnumber.sendKeys(MVAnumber);
+            Thread.sleep(3000);
+            txtMileage.clear();
+            Thread.sleep(2000);
+            txtMileage.sendKeys(Mileage);
+            
+            Thread.sleep(6000);
+            Select fuelDD = new Select(ddl_Fuel);
+         fuelDD.selectByVisibleText(VEFuel);
+         Thread.sleep(2000);
+         txt_VEremarks.sendKeys(remarks);
+     
+         btn_VEoffthelotok.click(); 
+                
+            Thread.sleep(10000);
+            if (btn_onthelotenter.isDisplayed())
+            {
+                   btn_onthelotenter.click();
+            }
+            Thread.sleep(10000);
+            
+            if (txtmethpay.isDisplayed())
+            {
+                   txtmethpay.sendKeys(methpay);
+                   btn_onthelotenter.click();
+            }
+            
+            Thread.sleep(10000);
+            if (btn_onthelotenter.isDisplayed())
+            {
+                   btn_onthelotenter.click();
+            }
+     }
+     
+     public void delayedoffthelot(String dlydInDate, String dlydInTime, String mileageIn, String prchsfuel, String fuelin, String adjstmnt, String vehdamaged, String accreport, String fuelother, String reason, String amount, String oneway, String misc, String miscfee, String MVAnumber, String Mileage, String VEFuel, String remarks)  throws InterruptedException
+     {
+
+       btn_offthelotDelayed.click();
+
+       txt_dlydInDate.sendKeys(dlydInDate);
+
+       txt_dlydInTime.sendKeys(dlydInTime);
+
        txt_VEMileageIn.sendKeys(mileageIn);
 
        Select prchsfuelDD = new Select(ddl_prchsfuel);
@@ -641,7 +826,7 @@ public class GUIFunctions{
        fuelinDD.selectByVisibleText(fuelin);
 
        txt_VEadjstmnt.sendKeys(adjstmnt);
-  
+
        Select vehdamagedDD = new Select(ddl_vehdamaged);
        vehdamagedDD.selectByVisibleText(vehdamaged);
 
@@ -673,80 +858,27 @@ public class GUIFunctions{
 
        txt_VEremarks.sendKeys(remarks);
 
-       btn_VEoffthelotok.click(); 
-     	    
+       btn_VEoffthelotok.click();
+
        Thread.sleep(10000);
        btn_VEoffthelotokenter.click();
      }
      
-     public void delayedoffthelot(String dlydInDate, String dlydInTime, String mileageIn, String prchsfuel, String fuelin, String adjstmnt, String vehdamaged, String accreport, String fuelother, String reason, String amount, String oneway, String misc, String miscfee, String MVAnumber, String Mileage, String VEFuel, String remarks)  throws InterruptedException
-     {
-    	 btn_offthelotDelayed.click();
-
-    	 txt_dlydInDate.sendKeys(dlydInDate);
-
-    	 txt_dlydInTime.sendKeys(dlydInTime);
-
-    	 txt_VEMileageIn.sendKeys(mileageIn);
-
-    	 Select prchsfuelDD = new Select(ddl_prchsfuel);
-    	 prchsfuelDD.selectByVisibleText(prchsfuel);
-	
-	     Select fuelinDD = new Select(ddl_fuelin);
-	     fuelinDD.selectByVisibleText(fuelin);
-	
-	     txt_VEadjstmnt.sendKeys(adjstmnt);
-	
-	     Select vehdamagedDD = new Select(ddl_vehdamaged);
-	     vehdamagedDD.selectByVisibleText(vehdamaged);
-	
-	     Select accreportDD = new Select(ddl_accreport);
-	     accreportDD.selectByVisibleText(accreport);		
-	
-	     Select fuelotherDD = new Select(ddl_fuelother);
-	     fuelotherDD.selectByVisibleText(fuelother);
-	
-	     Select reasonDD = new Select(ddl_reason);
-	     reasonDD.selectByVisibleText(reason);
-	
-	     txt_amount.sendKeys(amount);
-	
-	     txt_oneway.sendKeys(oneway);
-	
-	     Select miscDD = new Select(ddl_misc);
-	     miscDD.selectByVisibleText(misc);
-	
-	     txt_miscfee.sendKeys(miscfee);
-	
-	     txtMVAnumber.sendKeys(MVAnumber);
-	     Thread.sleep(2000);
-	     txtMileage.clear();
-	     txtMileage.sendKeys(Mileage);
-	
-	     Select fuelDD = new Select(ddl_Fuel);
-	     fuelDD.selectByVisibleText(VEFuel);
-	
-	     txt_VEremarks.sendKeys(remarks);
-	
-	     btn_VEoffthelotok.click();
-	
-	     Thread.sleep(10000);
-	     btn_VEoffthelotokenter.click();
-     }
-         
      /*To get RA Number*/
      public static int get_RA_Number(int RA_Num)
      {
          String str_RA_num = Integer.toString(RA_Num);
          String ary_RA     = str_RA_num.substring(8, 9);
-         if (ary_RA.endsWith("6"))
+         if (ary_RA.endsWith("6")) 
          {
-             RA_Num = RA_Num + 4;
+                RA_Num = RA_Num + 4;
          }
-         else
+
+         else 
          {
-             RA_Num = RA_Num + 11;
+                RA_Num = RA_Num + 11;
          }
          return RA_Num;
-     }
+     }     
+     
 }
